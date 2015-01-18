@@ -1,10 +1,11 @@
 # lumberjack
 
+*A Logging Library for LFE*
+
 [logo forth-coming ...]
 
-## Introduction
 
-A Logging Library for LFE.
+## Introduction
 
 The preferred logging library in Erlang is
 [lager](https://github.com/basho/lager). However, it doesn't work
