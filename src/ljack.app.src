@@ -1,8 +1,8 @@
 %% -*- erlang -*-
-{application, 'lumberjack',
+{application, 'ljack',
  [
   %% A quick description of the application.
-  {description, "My project description..."},
+  {description, "A Logging Library for LFE (lager wrapper)"},
 
   %% The version of the application
   {vsn, "0.0.1"},
@@ -10,7 +10,7 @@
   %% All modules used by the application.
   {modules,
    [
-    'lumberjack'
+    'ljack'
    ]},
 
   %% All of the registered names the application uses. This can be ignored.

@@ -25,7 +25,7 @@ Just add it to your ``rebar.config`` deps:
 ```erlang
   {deps, [
     ...
-    {lumberjack, ".*",
+    {ljack, ".*",
       {git, "git@github.com:oubiwann/lumberjack.git", "master"}}
       ]}.
 ```

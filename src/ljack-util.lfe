@@ -1,8 +1,8 @@
-(defmodule lumberjack-util
+(defmodule ljack-util
   (export all))
 
 (defun get-version ()
-  (lutil:get-app-version 'lumberjack))
+  (lutil:get-app-version 'ljack))
 
 (defun get-versions ()
   (++ (lutil:get-versions)

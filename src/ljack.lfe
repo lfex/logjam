@@ -1,4 +1,4 @@
-(defmodule lumberjack
+(defmodule ljack
   (export all))
 
 (defun my-adder (x y)

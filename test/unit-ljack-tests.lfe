@@ -1,4 +1,4 @@
-(defmodule unit-lumberjack-tests
+(defmodule unit-ljack-tests
   (behaviour ltest-unit)
   (export all)
   (import
@@ -9,4 +9,4 @@
 (include-lib "ltest/include/ltest-macros.lfe")
 
 (deftest my-adder
-  (is-equal 4 (: lumberjack my-adder 2 2)))
+  (is-equal 4 (ljack:my-adder 2 2)))
