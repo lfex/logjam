@@ -1,5 +1,5 @@
 (defmodule logjam
   (export all))
 
-(defun my-adder (x y)
-  (+ x (+ y 1)))
+(defun setup ()
+  (lcfg-log:setup))
