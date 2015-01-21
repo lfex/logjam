@@ -1,4 +1,4 @@
-(defmodule ljack
+(defmodule logjam
   (export all))
 
 (defun my-adder (x y)

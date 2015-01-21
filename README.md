@@ -1,8 +1,8 @@
-# lumberjack
+# logjam
 
 *A Logging Library for LFE*
 
-[logo forth-coming ...]
+<img src="resources/images/logjam.jpg">
 
 
 ## Introduction
@@ -25,8 +25,8 @@ Just add it to your ``rebar.config`` deps:
 ```erlang
   {deps, [
     ...
-    {ljack, ".*",
-      {git, "git@github.com:oubiwann/lumberjack.git", "master"}}
+    {logjam, ".*",
+      {git, "git@github.com:oubiwann/logjam.git", "master"}}
       ]}.
 ```
 

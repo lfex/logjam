@@ -1,5 +1,5 @@
 %% -*- erlang -*-
-{application, 'ljack',
+{application, 'logjam',
  [
   %% A quick description of the application.
   {description, "A Logging Library for LFE (lager wrapper)"},
