@@ -2,7 +2,7 @@
 
 *A Logging Library for LFE*
 
-<img src="resources/images/logjam-crop-small.png">
+<a href="https://raw.githubusercontent.com/lfex/logjam/master/resources/images/logjam.jpg"><img src="resources/images/logjam-crop-small.png"></a>
 
 
 ## Introduction
