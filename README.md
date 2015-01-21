@@ -60,7 +60,7 @@ appropriate lager configuration options set. For instance:
                 #(count 5)))))))
 ```
 
-Any legal lager configuration will work (as long as you tranlate it into LFE
+Any legal lager configuration will work (as long as you translate it into LFE
 syntax first!).
 
 Next, setup logjam:
