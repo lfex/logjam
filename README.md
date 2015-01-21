@@ -26,7 +26,7 @@ Just add it to your ``rebar.config`` deps:
   {deps, [
     ...
     {logjam, ".*",
-      {git, "git@github.com:oubiwann/logjam.git", "master"}}
+      {git, "git@github.com:lfex/logjam.git", "master"}}
       ]}.
 ```
 
