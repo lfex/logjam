@@ -14,8 +14,7 @@ compiler uses Core Erlang and does not generate Erlang abstract terms, which
 are how Erlang parse transforms work).
 
 As such, we needed a way to easily use lager from LFE. So here you have it: a
-lumberjack you do *not* want to cross sticks with ... unless you really know
-what you're doing.
+a pile of logs for the LFE community, in a river of LFE code ...
 
 
 ## Installation
