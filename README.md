@@ -94,7 +94,7 @@ Now you'll be able to use logjam. The following log types are defined:
  * ``alert``
  * ``emergency``
 
-Each of these has aritcy 1, 2, 3, and 4 functions of the same name:
+Each of these has arity 1, 2, 3, and 4 functions of the same name:
 * arity 1: pass a message
 * arity 2: pass an ``(io_lib:format ...)`` format string and arguments for the
   format string
