@@ -5,7 +5,17 @@
 <img src="resources/images/logjam-crop-small.png">
 
 
-## Introduction
+## Table of Contents
+
+* [Introduction](#introduction-)
+* [Installation](#installation-)
+* [Setup](#setup-)
+* [Usage](#usage-)
+  * [Log-level Functions](#log-level-functions-)
+  * [Dynamically Updating Log Levels](#dynamically-updating-log-Levels-)
+
+
+## Introduction [&#x219F;](#table-of-contents)
 
 The preferred logging library in Erlang is
 [lager](https://github.com/basho/lager). However, it doesn't work
@@ -18,7 +28,7 @@ lumberjack you do *not* want to cross sticks with ... unless you really know
 what you're doing.
 
 
-## Installation
+## Installation [&#x219F;](#table-of-contents)
 
 Just add it to your ``rebar.config`` deps:
 
@@ -37,7 +47,7 @@ And then do the usual:
 ```
 
 
-## Setup
+## Setup [&#x219F;](#table-of-contents)
 
 First things first, make sure you have an ``lfe.config`` file with the
 appropriate lager configuration options set. For instance:
@@ -83,7 +93,9 @@ loaded-logjam
 ```
 
 
-## Usage
+## Usage [&#x219F;](#table-of-contents)
+
+### Log-level Functions [&#x219F;](#table-of-contents)
 
 Now you'll be able to use logjam. The following log types are defined:
  * ``debug``
@@ -127,4 +139,36 @@ ok
 > (alert (MODULE) 'my-func "~s~shey!" '("whoa! " "red alert, "))
 ok
 > 23:41:35.176 [alert] [-no-module:my-func] whoa! red alert, hey!
+```
+
+
+### Dynamically Updating Log Levels [&#x219F;](#table-of-contents)
+
+logjam provides the following wrappers for this same functionality in lager:
+ * ``logjam:set-level/1`` - set the level of the console backend
+ * ``logjam:set-level/2`` - set the log level of a given backend
+ * ``logjam:set-level/3`` - set the log level of a given backend's' logfile
+
+ Examples:
+
+ ```cl
+> (logjam:set-level 'debug)
+ok
+ ```
+
+```cl
+> (logjam:set-level 'lager_console_backend 'debug)
+ok
+```
+
+```cl
+> (logjam:set-level 'lager_file_backend "log/console.log" 'debug)
+21:32:03.894 [notice] Changed loglevel of log/console.log to debug
+ok
+```
+
+```cl
+(logjam:set-level 'lager_file_backend "log/error.log" 'warning)
+21:34:32.131 [notice] Changed loglevel of log/error.log to warning
+ok
 ```
