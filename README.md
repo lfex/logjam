@@ -12,7 +12,7 @@
 * [Setup](#setup-)
 * [Usage](#usage-)
   * [Log-level Functions](#log-level-functions-)
-  * [Dynamically Updating Log Levels](#dynamically-updating-log-Levels-)
+  * [Dynamically Updating Log Levels](#dynamically-updating-log-levels-)
 
 
 ## Introduction [&#x219F;](#table-of-contents)
