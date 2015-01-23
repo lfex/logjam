@@ -148,9 +148,9 @@ logjam provides the following wrappers for this same functionality in lager:
  * ``logjam:set-level/2`` - set the log level of a given backend
  * ``logjam:set-level/3`` - set the log level of a given backend's' logfile
 
- Examples:
+Examples:
 
- ```cl
+```cl
 > (logjam:set-level 'debug)
 ok
  ```
