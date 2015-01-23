@@ -2,7 +2,7 @@
 
 *A Logging Library for LFE*
 
-<img src="resources/images/logjam-crop-small.png">
+<a href="https://raw.githubusercontent.com/lfex/logjam/master/resources/images/logjam.jpg"><img src="resources/images/logjam-crop-small.png"></a>
 
 
 ## Table of Contents
@@ -24,8 +24,7 @@ compiler uses Core Erlang and does not generate Erlang abstract terms, which
 are how Erlang parse transforms work).
 
 As such, we needed a way to easily use lager from LFE. So here you have it: a
-lumberjack you do *not* want to cross sticks with ... unless you really know
-what you're doing.
+a pile of logs for the LFE community, in a river of LFE code ...
 
 
 ## Installation [&#x219F;](#table-of-contents)
@@ -71,7 +70,7 @@ appropriate lager configuration options set. For instance:
                 #(count 5)))))))
 ```
 
-Any legal lager configuration will work (as long as you tranlate it into LFE
+Any legal lager configuration will work (as long as you translate it into LFE
 syntax first!).
 
 Next, setup logjam:
@@ -107,7 +106,7 @@ Now you'll be able to use logjam. The following log types are defined:
  * ``alert``
  * ``emergency``
 
-Each of these has aritcy 1, 2, 3, and 4 functions of the same name:
+Each of these has arity 1, 2, 3, and 4 functions of the same name:
 * arity 1: pass a message
 * arity 2: pass an ``(io_lib:format ...)`` format string and arguments for the
   format string
