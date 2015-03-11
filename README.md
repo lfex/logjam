@@ -119,7 +119,7 @@ Now you'll be able to use logjam. The following log types are defined:
  * ``info``
  * ``notice``
  * ``warning``
- * ``error``
+ * ``error`` (supported by both sets of ``error`` and ``err`` functions)
  * ``critical``
  * ``alert``
  * ``emergency``
