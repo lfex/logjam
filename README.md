@@ -12,7 +12,7 @@
 * [Setup](#setup-)
 * [Usage](#usage-)
   * [As Includes](#as-includes-)
-  * [Via mod:func](#via-mod:func-)
+  * [Via mod func](#via-mod-func-)
   * [Log-level Functions](#log-level-functions-)
   * [Dynamically Updating Log Levels](#dynamically-updating-log-levels-)
 
@@ -101,7 +101,7 @@ loaded-logjam
 ...
 ```
 
-### Via mod:func [&#x219F;](#table-of-contents)
+### Via mod func [&#x219F;](#table-of-contents)
 
 In some instances, it may not be perferable to use ``(include-lib ...)`` and
 you may prefer ``mod:func`` calls instead. The ``logjam`` module includes the
