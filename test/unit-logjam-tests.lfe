@@ -1,4 +1,4 @@
-(defmodule unit-ljack-tests
+(defmodule unit-logjam-tests
   (behaviour ltest-unit)
   (export all))
 
