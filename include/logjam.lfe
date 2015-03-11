@@ -26,6 +26,9 @@
 (defun warning (msg)
   (log 'warning msg))
 
+(defun err (msg)
+  (log 'error msg))
+
 (defun error (msg)
   (log 'error msg))
 
@@ -50,6 +53,9 @@
 
 (defun warning (format args)
   (log-format 'warning format args))
+
+(defun err (format args)
+  (log-format 'error format args))
 
 (defun error (format args)
   (log-format 'error format args))
@@ -76,6 +82,9 @@
 (defun warning (mod func msg)
   (log-mod-func 'warning mod func msg))
 
+(defun err (mod func msg)
+  (log-mod-func 'error mod func msg))
+
 (defun error (mod func msg)
   (log-mod-func 'error mod func msg))
 
@@ -100,6 +109,9 @@
 
 (defun warning (mod func format args)
   (log-mod-func-format 'warning mod func format args))
+
+(defun err (mod func format args)
+  (log-mod-func-format 'error mod func format args))
 
 (defun error (mod func format args)
   (log-mod-func-format 'error mod func format args))

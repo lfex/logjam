@@ -6,7 +6,6 @@ endif
 LIB = $(PROJECT)
 DEPS = ./deps
 BIN_DIR = ./bin
-EXPM = $(BIN_DIR)/expm
 SOURCE_DIR = ./src
 OUT_DIR = ./ebin
 TEST_DIR = ./test
@@ -17,7 +16,7 @@ LFETOOL=$(BIN_DIR)/lfetool
 else
 LFETOOL=lfetool
 endif
-ERL_LIBS=.:..:../lumberjack:$(shell $(LFETOOL) info erllibs)
+ERL_LIBS=.:..:$(shell pwd):$(shell $(LFETOOL) info erllibs)
 OS := $(shell uname -s)
 ifeq ($(OS),Linux)
 		HOST=$(HOSTNAME)
@@ -40,11 +39,6 @@ get-version:
 	@ERL_LIBS=$(ERL_LIBS) PATH=$(SCRIPT_PATH) erl \
 	-eval "lfe_io:format(\"~p~n\",['lumberjack-util':'get-versions'()])." \
 	-noshell -s erlang halt
-
-$(EXPM): $(BIN_DIR)
-	@[ -f $(EXPM) ] || \
-	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) $(LFETOOL) \
-	install expm $(BIN_DIR)
 
 get-deps:
 	@echo "Getting dependencies ..."
@@ -129,13 +123,3 @@ install: compile
 	@echo "Installing lumberjack ..."
 	@PATH=$(SCRIPT_PATH) lfetool install lfe
 
-upload: $(EXPM) get-version
-	@echo "Preparing to upload lumberjack ..."
-	@echo
-	@echo "Package file:"
-	@echo
-	@cat package.exs
-	@echo
-	@echo "Continue with upload? "
-	@read
-	$(EXPM) publish

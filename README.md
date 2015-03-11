@@ -11,6 +11,8 @@
 * [Installation](#installation-)
 * [Setup](#setup-)
 * [Usage](#usage-)
+  * [As Includes](#as-includes-)
+  * [Via mod func](#via-mod-func-)
   * [Log-level Functions](#log-level-functions-)
   * [Dynamically Updating Log Levels](#dynamically-updating-log-levels-)
 
@@ -81,18 +83,34 @@ ok
 > 23:15:06.522 [info] Application lager started on node nonode@nohost
 ```
 
-As you can see, this will start up lager. You may or may not see a message
+As you might guess, this will start up lager. You may or may not see a message
 logged to the console, depending upon your settings in ``lfe.config``.
 
-Then you'll want to include the logging functions:
+
+## Usage [&#x219F;](#table-of-contents)
+
+### As Includes [&#x219F;](#table-of-contents)
+
+
+You can include logjam functions in your LFE files with the following:
 
 ```cl
 > (include-lib "logjam/include/logjam.lfe")
 loaded-logjam
+> (info "...")
+...
 ```
 
+### Via mod func [&#x219F;](#table-of-contents)
 
-## Usage [&#x219F;](#table-of-contents)
+In some instances, it may not be perferable to use ``(include-lib ...)`` and
+you may prefer ``mod:func`` calls instead. The ``logjam`` module includes the
+functions so that this usage is possible:
+
+```cl
+> (logjam:info "...")
+...
+```
 
 ### Log-level Functions [&#x219F;](#table-of-contents)
 
@@ -101,7 +119,7 @@ Now you'll be able to use logjam. The following log types are defined:
  * ``info``
  * ``notice``
  * ``warning``
- * ``error``
+ * ``error`` (supported by both sets of ``error`` and ``err`` functions)
  * ``critical``
  * ``alert``
  * ``emergency``
