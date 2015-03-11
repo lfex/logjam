@@ -1,6 +1,8 @@
 (defmodule logjam
   (export all))
 
+(include-lib "logjam/include/logjam.lfe")
+
 (defun setup ()
   (lcfg-log:setup))
 
