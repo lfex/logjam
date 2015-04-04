@@ -6,6 +6,9 @@
 (defun setup ()
   (lcfg-log:setup))
 
+(defun start ()
+  (setup))
+
 (defun set-level (log-level)
   (set-level 'lager_console_backend log-level))
 
