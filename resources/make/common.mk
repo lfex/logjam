@@ -16,7 +16,7 @@ LFETOOL=$(BIN_DIR)/lfetool
 else
 LFETOOL=lfetool
 endif
-ERL_LIBS=.:..:$(shell pwd):$(shell $(LFETOOL) info erllibs)
+ERL_LIBS=:$(shell pwd):$(shell $(LFETOOL) info erllibs)
 OS := $(shell uname -s)
 ifeq ($(OS),Linux)
 		HOST=$(HOSTNAME)
@@ -29,7 +29,7 @@ $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
 get-lfetool: $(BIN_DIR)
-	curl -L -o ./lfetool https://raw.github.com/lfe/lfetool/stable/lfetool && \
+	curl -L -o ./lfetool https://raw.github.com/lfe/lfetool/dev-v1/lfetool && \
 	chmod 755 ./lfetool && \
 	mv ./lfetool $(BIN_DIR)
 
@@ -37,7 +37,7 @@ get-version:
 	@PATH=$(SCRIPT_PATH) $(LFETOOL) info version
 	@echo "Erlang/OTP, LFE, & library versions:"
 	@ERL_LIBS=$(ERL_LIBS) PATH=$(SCRIPT_PATH) erl \
-	-eval "lfe_io:format(\"~p~n\",['lumberjack-util':'get-versions'()])." \
+	-eval "lfe_io:format(\"~p~n\",['$(PROJECT)':'get-versions'()])." \
 	-noshell -s erlang halt
 
 get-deps:
@@ -70,22 +70,22 @@ compile-tests: clean-eunit
 repl: compile
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting an LFE REPL ..."
-	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) $(LFETOOL) repl lfe +pc unicode -s logjam
+	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) $(LFETOOL) repl lfe +pc unicode  -s logjam
 
 repl-no-deps: compile-no-deps
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting an LFE REPL ..."
-	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) $(LFETOOL) repl lfe +pc unicode -s logjam
+	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) $(LFETOOL) repl lfe +pc unicode  -s logjam
 
 shell: compile
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting an Erlang shell ..."
-	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) erl + pc unicode -s logjam
+	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) erl +pc unicode  -s logjam
 
 shell-no-deps: compile-no-deps
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting an Erlang shell ..."
-	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) erl + pc unicode -s logjam
+	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) erl +pc unicode  -s logjam
 
 clean: clean-ebin clean-eunit
 	@which rebar.cmd >/dev/null 2>&1 && rebar.cmd clean || rebar clean
@@ -120,6 +120,5 @@ push-all:
 	git push upstream --tags
 
 install: compile
-	@echo "Installing lumberjack ..."
+	@echo "Installing $(PROJECT) ..."
 	@PATH=$(SCRIPT_PATH) lfetool install lfe
-
