@@ -15,6 +15,7 @@
   * [Via mod func](#via-mod-func-)
   * [Log-level Functions](#log-level-functions-)
   * [Dynamically Updating Log Levels](#dynamically-updating-log-levels-)
+  * [Colour Support](#colour-support-)
 
 
 ## Introduction [&#x219F;](#table-of-contents)
@@ -88,6 +89,8 @@ logged to the console, depending upon your settings in ``lfe.config``.
 
 
 ## Usage [&#x219F;](#table-of-contents)
+
+<img src="resources/images/screenshot.png">
 
 ### As Includes [&#x219F;](#table-of-contents)
 
@@ -189,3 +192,10 @@ ok
 21:34:32.131 [notice] Changed loglevel of log/error.log to warning
 ok
 ```
+
+### Colour Support [&#x219F;](#table-of-contents)
+
+Logjam supports coloured logging -- you just need to enable it in your
+project's ``lfe.config`` file. See the logjam ``lfe.config`` for example
+configuration.
+
