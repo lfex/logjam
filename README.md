@@ -90,7 +90,6 @@ logged to the console, depending upon your settings in ``lfe.config``.
 
 ## Usage [&#x219F;](#table-of-contents)
 
-<img src="resources/images/screenshot.png">
 
 ### As Includes [&#x219F;](#table-of-contents)
 
@@ -194,6 +193,8 @@ ok
 ```
 
 ### Colour Support [&#x219F;](#table-of-contents)
+
+<img src="resources/images/screenshot.png">
 
 Logjam supports coloured logging -- you just need to enable it in your
 project's ``lfe.config`` file. See the logjam ``lfe.config`` for example
