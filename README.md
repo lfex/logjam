@@ -29,6 +29,8 @@ are how Erlang parse transforms work).
 As such, we needed a way to easily use lager from LFE. So here you have it: a
 a pile of logs for the LFE community, in a river of LFE code ...
 
+<img src="resources/images/screenshot.png">
+
 
 ## Installation [&#x219F;](#table-of-contents)
 
@@ -193,8 +195,6 @@ ok
 ```
 
 ### Colour Support [&#x219F;](#table-of-contents)
-
-<img src="resources/images/screenshot.png">
 
 Logjam supports coloured logging -- you just need to enable it in your
 project's ``lfe.config`` file. See the logjam ``lfe.config`` for example
