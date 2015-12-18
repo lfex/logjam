@@ -18,8 +18,6 @@
   * [Colour Support](#colour-support-)
   * [Starting Logjam](#starting-logjam-)
 * [Usage](#usage-)
-  * [As Includes](#as-includes-)
-  * [Via mod func](#via-mod-func-)
   * [Log-level Functions](#log-level-functions-)
   * [Dynamically Updating Log Levels](#dynamically-updating-log-levels-)
 
