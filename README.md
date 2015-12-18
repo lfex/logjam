@@ -2,7 +2,11 @@
 
 *A Logging Library for LFE*
 
-<a href="https://raw.githubusercontent.com/lfex/logjam/master/resources/images/logjam.jpg"><img src="resources/images/logjam-crop-small.png"></a>
+
+[![][logo]][logo-large]
+
+[logo]: resources/images/logjam-crop-small.png
+[logo-large]: resources/images/logjam.jpg
 
 
 ## Table of Contents
@@ -10,12 +14,14 @@
 * [Introduction](#introduction-)
 * [Installation](#installation-)
 * [Setup](#setup-)
+  * [Basic Configuration](#basic-configuration-)
+  * [Colour Support](#colour-support-)
+  * [Starting Logjam](#starting-logjam-)
 * [Usage](#usage-)
   * [As Includes](#as-includes-)
   * [Via mod func](#via-mod-func-)
   * [Log-level Functions](#log-level-functions-)
   * [Dynamically Updating Log Levels](#dynamically-updating-log-levels-)
-  * [Colour Support](#colour-support-)
 
 
 ## Introduction [&#x219F;](#table-of-contents)
@@ -29,7 +35,9 @@ are how Erlang parse transforms work).
 As such, we needed a way to easily use lager from LFE. So here you have it: a
 a pile of logs for the LFE community, in a river of LFE code ...
 
-<img src="resources/images/screenshot.png">
+[![][screenshot]][screenshot]
+
+[screenshot]: resources/images/screenshot.png
 
 
 ## Installation [&#x219F;](#table-of-contents)
@@ -52,6 +60,9 @@ And then do the usual:
 
 
 ## Setup [&#x219F;](#table-of-contents)
+
+
+### Basic Configuration [&#x219F;](#table-of-contents)
 
 First things first, make sure you have an ``lfe.config`` file with the
 appropriate lager configuration options set. For instance:
@@ -78,43 +89,88 @@ appropriate lager configuration options set. For instance:
 Any legal lager configuration will work (as long as you translate it into LFE
 syntax first!).
 
-Next, setup logjam:
+If you'd like to use use the custom log formatter (modeled after logging formats common in Clojure applications), you can configure your handler like the following:
 
 ```cl
-> (logjam:setup)
-ok
-> 23:15:06.522 [info] Application lager started on node nonode@nohost
+#(logging (
+   #(log-level debug)
+   #(colored true)
+   #(backend lager)
+   #(options (#(lager_console_backend (
+                debug
+                #(logjam-formatter
+                  (date " " time " [" pid "] [" severity "] " message "\n"))))
+               ...))))
+
 ```
 
-As you might guess, this will start up lager. You may or may not see a message
-logged to the console, depending upon your settings in ``lfe.config``.
+
+### Color Support [&#x219F;](#table-of-contents)
+
+Logjam supports colourd logging -- you just need to enable it in your
+project's ``lfe.config`` file. See the logjam ``lfe.config`` for example
+configuration.
+
+To not have ANSI colors as part of the output, be sure to use ``#(colored false)``.
+
+If you'd like to use your own colors, you can start with this template:
+
+```cl
+#(logging (
+   #(log-level debug)
+   #(colored true)
+   #(colors (#(timestamp (color green))
+             #(process (color cyan))
+             #(date (color green))
+             #(time (color green))
+             #(modfunc (color yellow))
+             #(message (color green))
+             #(debug (color greenb))
+             #(info (color blue))
+             #(notice (color cyan))
+             #(warning (color yellow))
+             #(error (color red))
+             #(critical (color yellowb))
+             #(alert (color magentab))
+             #(emergency (color redb))))
+  ...))
+
+The confguration value for the color is a list of module and func that will be called to wrap color around the log text indicated by the configuration's key (e.g., timestamp, debug, etc.)
+
+
+### Starting Logjam [&#x219F;](#table-of-contents)
+
+Next, start the logjam application (which will perform additional setup and start lager):
+
+```cl
+> (logjam:start)
+ok
+2015-12-17 13:08:04.163 [<0.7.0>] [info] Application lager started on ...
+```
+
+ou may or may not see a message logged to the console, depending upon your log-level setting in ``lfe.config``.
 
 
 ## Usage [&#x219F;](#table-of-contents)
 
-
-### As Includes [&#x219F;](#table-of-contents)
-
-
-You can include logjam functions in your LFE files with the following:
+The ``logjam`` module includes all the logging functions you may be used to in other logging frameworks. These allow you do make calls like the following:
 
 ```cl
-> (include-lib "logjam/include/logjam.lfe")
-loaded-logjam
-> (info "...")
-...
+(logjam:info "An informative message")
+(logjam:info "A ~p message" '(great))
+(logjam:info 'my-mod 'my-func/2 "Message from function ...")
+(logjam:info 'my-mod 'my-func/2 "Message from a ~p function ..." '(simple))
 ```
 
-### Via mod func [&#x219F;](#table-of-contents)
-
-In some instances, it may not be perferable to use ``(include-lib ...)`` and
-you may prefer ``mod:func`` calls instead. The ``logjam`` module includes the
-functions so that this usage is possible:
+If you would like to have your module and function populated in the log more or less automatically, you can call logjam log functions with the "caller" tuple:
 
 ```cl
-> (logjam:info "...")
-...
+(logjam:info `#(c ,(logjam:caller)) "An informative message")
+(logjam:info `#(c ,(logjam:caller)) "A ~p message" '(great))
 ```
+
+More details on the logging functions are given below.
+
 
 ### Log-level Functions [&#x219F;](#table-of-contents)
 
@@ -131,35 +187,48 @@ Now you'll be able to use logjam. The following log types are defined:
 Each of these has arity 1, 2, 3, and 4 functions of the same name:
 * arity 1: pass a message
 * arity 2: pass an ``(io_lib:format ...)`` format string and arguments for the
-  format string
-* arity 3: pass a module, a function, and a message
+  format string OR pass a caller tuple and a message
+* arity 3: pass a module, a function, and a message OR pass a caller tuple, a format string, and args
 * arity 4: pass a module, a function, an ``(io_lib:format ...)`` format string,
   and arguments for the format string
 
 Examples:
 
 ```cl
-> (info "wassup?")
+> (logjam:info "wassup?")
 ok
-> 23:37:19.206 [info] wassup?
+> 2015-12-17 13:44:06.912 [<0.46.0>] [info] wassup?
 ```
 
 ```cl
-> (critical "~s~shey!" '("a " "critical thing, hey-"))
+> (logjam:critical "~s~shey!" '("a " "critical thing, hey-"))
 ok
-> 23:37:38.594 [critical] a critical thing, hey-hey!
+> 2015-12-17 13:44:31.412 [<0.46.0>] [critical] a critical thing, hey-hey!
 ```
 
 ```cl
-> (notice (MODULE) 'my-func "You better check this out ...")
+> (logjam:notice `#(c ,(logjam:caller)) "You better check this out ...")
 ok
-> 23:45:45.097 [notice] [-no-module:my-func] You better check this out ...
+> 2015-12-17 13:49:10.235 [<0.46.0>] [notice] lists:map/2 You better check this out ...
+
 ```
 
 ```cl
-> (alert (MODULE) 'my-func "~s~shey!" '("whoa! " "red alert, "))
+> (logjam:notice (MODULE) 'my-func "You better check this out ...")
 ok
-> 23:41:35.176 [alert] [-no-module:my-func] whoa! red alert, hey!
+> 2015-12-17 13:45:12.158 [<0.46.0>] [notice] -no-module:my-func You better check this out ...
+```
+
+```cl
+> (logjam:alert `#(c ,(logjam:caller)) "~s~shey!" '("whoa! " "red alert, "))
+ok
+> 2015-12-17 13:48:08.277 [<0.46.0>] [alert] lists:map/2 whoa! red alert, hey!
+```
+
+```cl
+> (logjam:alert (MODULE) 'my-func "~s~shey!" '("whoa! " "red alert, "))
+ok
+> 2015-12-17 13:45:31.196 [<0.46.0>] [alert] -no-module:my-func whoa! red alert, hey!
 ```
 
 
@@ -193,10 +262,3 @@ ok
 21:34:32.131 [notice] Changed loglevel of log/error.log to warning
 ok
 ```
-
-### Colour Support [&#x219F;](#table-of-contents)
-
-Logjam supports coloured logging -- you just need to enable it in your
-project's ``lfe.config`` file. See the logjam ``lfe.config`` for example
-configuration.
-
