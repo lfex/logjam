@@ -12,6 +12,7 @@
 ## Table of Contents
 
 * [Introduction](#introduction-)
+* [Dependencies](#dependencies-)
 * [Installation](#installation-)
 * [Setup](#setup-)
   * [Basic Configuration](#basic-configuration-)
@@ -36,6 +37,14 @@ a pile of logs for the LFE community, in a river of LFE code ...
 [![][screenshot]][screenshot]
 
 [screenshot]: resources/images/screenshot.png
+
+
+## Dependencies [&#x219F;](#contents)
+
+As of version 0.3.0, this project assumes that you have
+[rebar3](https://github.com/rebar/rebar3) installed somwhere in your ``$PATH``.
+It no longer uses the old version of rebar. If you do not wish to use rebar3,
+you may use the most recent rebar2-compatible release of logjam: 0.2.0.
 
 
 ## Installation [&#x219F;](#table-of-contents)
