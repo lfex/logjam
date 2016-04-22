@@ -12,7 +12,7 @@
   (application:stop 'logjam))
 
 (deftestcase from-include (setup-result)
-  (is (try (progn (info "Running test case mod-func ...") 'true)
+  (is (try (progn (logjam:info "Running test case mod-func ...") 'true)
            (catch (err (error err))))))
 
 (deftestcase from-mod-func (setup-result)
