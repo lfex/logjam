@@ -5,8 +5,8 @@
 
 [![][logo]][logo-large]
 
-[logo]: resources/images/logjam-crop-small.png
-[logo-large]: resources/images/logjam.jpg
+[logo]: priv/images/logjam-crop-small.png
+[logo-large]: priv/images/logjam.jpg
 
 
 ## Table of Contents
@@ -36,7 +36,7 @@ a pile of logs for the LFE community, in a river of LFE code ...
 
 [![][screenshot]][screenshot]
 
-[screenshot]: resources/images/screenshot.png
+[screenshot]: priv/images/screenshot.png
 
 
 ## Dependencies [&#x219F;](#contents)

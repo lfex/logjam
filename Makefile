@@ -1,3 +1,9 @@
 PROJECT = logjam
+ROOT_DIR = $(shell pwd)
+REPO = $(shell git config --get remote.origin.url)
+LFE = _build/dev/lib/lfe/bin/lfe
 
-include resources/make/common.mk
+include priv/make/code.mk
+include priv/make/docs.mk
+
+
