@@ -141,6 +141,7 @@ If you'd like to use your own colors, you can start with this template:
              #(alert (color magentab))
              #(emergency (color redb))))
   ...))
+```
 
 The confguration value for the color is a list of module and func that will be called to wrap color around the log text indicated by the configuration's key (e.g., timestamp, debug, etc.)
 
@@ -155,7 +156,7 @@ ok
 2015-12-17 13:08:04.163 [<0.7.0>] [info] Application lager started on ...
 ```
 
-ou may or may not see a message logged to the console, depending upon your log-level setting in ``lfe.config``.
+You may or may not see a message logged to the console, depending upon your log-level setting in ``lfe.config``.
 
 
 ## Usage [&#x219F;](#table-of-contents)
