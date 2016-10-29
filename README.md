@@ -1,6 +1,10 @@
 # logjam
 
-[![Build Status][travis badge]][travis] [![LFE Versions][lfe badge]][lfe] [![Erlang Versions][erlang badge]][versions] [![Tags][github tags badge]][github tags] [![Downloads][hex downloads]][hex package]
+[![Build Status][travis badge]][travis] 
+[![LFE Versions][lfe badge]][lfe] 
+[![Erlang Versions][erlang badge]][versions] 
+[![Tags][github tags badge]][github tags] 
+[![Downloads][hex downloads]][hex package]
 
 [![Project Logo][logo]][logo-large]
 
@@ -36,17 +40,17 @@ a pile of logs for the LFE community, in a river of LFE code ...
 [![][screenshot]][screenshot]
 
 
-## Dependencies [&#x219F;](#contents)
+## Dependencies [&#x219F;](#table-of-contents)
 
 As of version 0.3.0, this project assumes that you have
-[rebar3](https://github.com/rebar/rebar3) installed somwhere in your ``$PATH``.
+[rebar3](https://github.com/rebar/rebar3) installed somwhere in your `$PATH`.
 It no longer uses the old version of rebar. If you do not wish to use rebar3,
 you may use the most recent rebar2-compatible release of logjam: 0.2.0.
 
 
 ## Installation [&#x219F;](#table-of-contents)
 
-Just add it to your ``rebar.config`` deps:
+Just add it to your `rebar.config` deps:
 
 ```erlang
 {deps, [
@@ -68,7 +72,7 @@ $ make compile
 
 ### Basic Configuration [&#x219F;](#table-of-contents)
 
-First things first, make sure you have an ``lfe.config`` file with the
+First things first, make sure you have an `lfe.config` file with the
 appropriate lager configuration options set. For instance:
 
 ```cl
@@ -93,7 +97,9 @@ appropriate lager configuration options set. For instance:
 Any legal lager configuration will work (as long as you translate it into LFE
 syntax first!).
 
-If you'd like to use use the custom log formatter (modeled after logging formats common in Clojure applications), you can configure your handler like the following:
+If you'd like to use use the custom log formatter (modeled after logging 
+formats common in Clojure applications), you can configure your handler like 
+the following:
 
 ```cl
 #(logging (
@@ -105,17 +111,16 @@ If you'd like to use use the custom log formatter (modeled after logging formats
                 #(logjam-formatter
                   (date " " time " [" pid "] [" severity "] " message "\n"))))
                ...))))
-
 ```
 
 
 ### Color Support [&#x219F;](#table-of-contents)
 
 Logjam supports colourd logging -- you just need to enable it in your
-project's ``lfe.config`` file. See the logjam ``lfe.config`` for example
+project's `lfe.config` file. See the logjam `lfe.config` for example
 configuration.
 
-To not have ANSI colors as part of the output, be sure to use ``#(colored false)``.
+To not have ANSI colors as part of the output, be sure to use `#(colored false)`.
 
 If you'd like to use your own colors, you can start with this template:
 
@@ -138,6 +143,7 @@ If you'd like to use your own colors, you can start with this template:
              #(alert (color magentab))
              #(emergency (color redb))))
   ...))
+```
 
 The confguration value for the color is a list of module and func that will be called to wrap color around the log text indicated by the configuration's key (e.g., timestamp, debug, etc.)
 
@@ -152,12 +158,12 @@ ok
 2015-12-17 13:08:04.163 [<0.7.0>] [info] Application lager started on ...
 ```
 
-ou may or may not see a message logged to the console, depending upon your log-level setting in ``lfe.config``.
+You may or may not see a message logged to the console, depending upon your log-level setting in `lfe.config`.
 
 
 ## Usage [&#x219F;](#table-of-contents)
 
-The ``logjam`` module includes all the logging functions you may be used to in other logging frameworks. These allow you do make calls like the following:
+The `logjam` module includes all the logging functions you may be used to in other logging frameworks. These allow you do make calls like the following:
 
 ```cl
 (logjam:info "An informative message")
@@ -179,21 +185,21 @@ More details on the logging functions are given below.
 ### Log-level Functions [&#x219F;](#table-of-contents)
 
 Now you'll be able to use logjam. The following log types are defined:
- * ``debug``
- * ``info``
- * ``notice``
- * ``warning``
- * ``error`` (supported by both sets of ``error`` and ``err`` functions)
- * ``critical``
- * ``alert``
- * ``emergency``
+ * `debug`
+ * `info`
+ * `notice`
+ * `warning`
+ * `error` (supported by both sets of `error` and `err` functions)
+ * `critical`
+ * `alert`
+ * `emergency`
 
 Each of these has arity 1, 2, 3, and 4 functions of the same name:
 * arity 1: pass a message
-* arity 2: pass an ``(io_lib:format ...)`` format string and arguments for the
+* arity 2: pass an `(io_lib:format ...)` format string and arguments for the
   format string OR pass a caller tuple and a message
 * arity 3: pass a module, a function, and a message OR pass a caller tuple, a format string, and args
-* arity 4: pass a module, a function, an ``(io_lib:format ...)`` format string,
+* arity 4: pass a module, a function, an `(io_lib:format ...)` format string,
   and arguments for the format string
 
 Examples:
@@ -239,9 +245,9 @@ ok
 ### Dynamically Updating Log Levels [&#x219F;](#table-of-contents)
 
 logjam provides the following wrappers for this same functionality in lager:
- * ``logjam:set-level/1`` - set the level of the console backend
- * ``logjam:set-level/2`` - set the log level of a given backend
- * ``logjam:set-level/3`` - set the log level of a given backend's' logfile
+ * `logjam:set-level/1` - set the level of the console backend
+ * `logjam:set-level/2` - set the log level of a given backend
+ * `logjam:set-level/3` - set the log level of a given backend's' logfile
 
 Examples:
 
@@ -275,7 +281,7 @@ Apache Version 2 License
 Copyright © 2015-2016, Duncan McGreggor <oubiwann@gmail.com>
 
 
-<!-- Named page links below: /-->
+[](Named page links below ...)
 
 [logo]: priv/images/logjam-crop-small.png
 [logo-large]: priv/images/logjam.jpg
