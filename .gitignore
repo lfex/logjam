@@ -1,4 +1,6 @@
 _build/*
+rebar.lock
+rebar3.*dump
 deps
 *.sublime-project
 *.sublime-workspace
