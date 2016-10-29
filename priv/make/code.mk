@@ -13,7 +13,7 @@ shell:
 
 clean:
 	@rebar3 clean
-	@rm -rf ebin/* _build/default/lib/$(PROJECT) rebar.lock
+	@rm -rf ebin/* _build/default/lib/$(PROJECT) rebar.lock rebar3.*dump
 
 clean-all: clean
 	@rebar3 as dev lfe clean
