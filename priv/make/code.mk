@@ -2,7 +2,7 @@ compile:
 	rebar3 compile
 
 check:
-	@rebar3 as test eunit
+	@rebar3 as test lfe test -t unit
 
 repl:
 	@rebar3 as dev compile
