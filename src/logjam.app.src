@@ -32,6 +32,15 @@
 
   %% configuration parameters similar to those in the config file specified
   %% on the command line. can be fetched with gas:get_env
-  {env, []}
- ]
-}.
+  {env, []},
+
+  %% Package metadata:
+  {pkg_name, logjam},
+  {maintainers, ["Duncan McGreggor"]},
+  {licenses, ["Apache-2"]},
+  {links,
+   [{"GitHub", "https://github.com/lfex/logjam"},
+    {"Gitlab", "https://gitlab.com/lfex/logjam"},
+    {"Hex", "https://hex.pm/packages/logjam"}
+   ]}
+ ]}.
