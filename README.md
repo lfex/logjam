@@ -7,7 +7,7 @@
 *A Logging Library for LFE*
 
 
-## Table of Contents
+##### Table of Contents
 
 * [Introduction](#introduction-)
 * [Dependencies](#dependencies-)
@@ -49,17 +49,17 @@ you may use the most recent rebar2-compatible release of logjam: 0.2.0.
 Just add it to your ``rebar.config`` deps:
 
 ```erlang
-  {deps, [
-    ...
-    {logjam, ".*",
-      {git, "git@github.com:lfex/logjam.git", "master"}}
-      ]}.
+{deps, [
+  ...
+  {logjam, ".*",
+    {git, "git@github.com:lfex/logjam.git", "master"}}
+    ]}.
 ```
 
 And then do the usual:
 
 ```bash
-    $ make compile
+$ make compile
 ```
 
 
