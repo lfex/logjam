@@ -1,12 +1,10 @@
 # logjam
 
-*A Logging Library for LFE*
-
+[![Build Status][travis badge]][travis] [![LFE Versions][lfe badge]][lfe] [![Erlang Versions][erlang badge]][versions] [![Tags][github tags badge]][github tags] [![Downloads][hex downloads]][hex package]
 
 [![][logo]][logo-large]
 
-[logo]: priv/images/logjam-crop-small.png
-[logo-large]: priv/images/logjam.jpg
+*A Logging Library for LFE*
 
 
 ## Table of Contents
@@ -21,6 +19,7 @@
 * [Usage](#usage-)
   * [Log-level Functions](#log-level-functions-)
   * [Dynamically Updating Log Levels](#dynamically-updating-log-levels-)
+* [License](#license-)
 
 
 ## Introduction [&#x219F;](#table-of-contents)
@@ -269,3 +268,32 @@ ok
 21:34:32.131 [notice] Changed loglevel of log/error.log to warning
 ok
 ```
+
+
+## License [&#x219F;](#table-of-contents)
+
+Apache Version 2 License
+
+Copyright © 2015-2016, Duncan McGreggor <oubiwann@gmail.com>
+
+
+
+<!-- Named page links below: /-->
+
+[logo]: priv/images/logjam-crop-small.png
+[logo-large]: priv/images/logjam.jpg
+[org]: https://github.com/lfex
+[github]: https://github.com/lfex/logjam
+[gitlab]: https://gitlab.com/lfex/logjam
+[travis]: https://travis-ci.org/lfex/logjam
+[travis badge]: https://img.shields.io/travis/lfex/logjam.svg
+[lfe]: https://github.com/rvirding/lfe
+[lfe badge]: https://img.shields.io/badge/lfe-1.2.0-blue.svg
+[erlang badge]: https://img.shields.io/badge/erlang-R15%20to%2019.1-blue.svg
+[versions]: https://github.com/lfex/logjam/blob/master/.travis.yml
+[github tags]: https://github.com/lfex/logjam/tags
+[github tags badge]: https://img.shields.io/github/tag/lfex/logjam.svg
+[github downloads]: https://img.shields.io/github/downloads/lfex/logjam/total.svg
+[hex badge]: https://img.shields.io/hexpm/v/logjam.svg?maxAge=2592000
+[hex package]: https://hex.pm/packages/logjam
+[hex downloads]: https://img.shields.io/hexpm/dt/logjam.svg
