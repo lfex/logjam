@@ -2,7 +2,7 @@
 
 [![Build Status][travis badge]][travis] [![LFE Versions][lfe badge]][lfe] [![Erlang Versions][erlang badge]][versions] [![Tags][github tags badge]][github tags] [![Downloads][hex downloads]][hex package]
 
-[![][logo]][logo-large]
+[![Project Logo][logo]][logo-large]
 
 *A Logging Library for LFE*
 
@@ -34,8 +34,6 @@ As such, we needed a way to easily use lager from LFE. So here you have it: a
 a pile of logs for the LFE community, in a river of LFE code ...
 
 [![][screenshot]][screenshot]
-
-[screenshot]: priv/images/screenshot.png
 
 
 ## Dependencies [&#x219F;](#contents)
@@ -277,11 +275,11 @@ Apache Version 2 License
 Copyright © 2015-2016, Duncan McGreggor <oubiwann@gmail.com>
 
 
-
 <!-- Named page links below: /-->
 
 [logo]: priv/images/logjam-crop-small.png
 [logo-large]: priv/images/logjam.jpg
+[screenshot]: priv/images/screenshot.png
 [org]: https://github.com/lfex
 [github]: https://github.com/lfex/logjam
 [gitlab]: https://gitlab.com/lfex/logjam
