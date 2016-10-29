@@ -47,6 +47,9 @@
 (defun warning (msg)
   (log 'warning msg))
 
+(defun warn (msg)
+  (log 'warning msg))
+
 (defun err (msg)
   (log 'error msg))
 
@@ -62,6 +65,12 @@
 (defun emergency (msg)
   (log 'emergency msg))
 
+(defun failure (msg)
+  (log 'emergency msg))
+
+(defun fail (msg)
+  (log 'emergency msg))
+
 ;;; Log function wrappers with args for (io_lib:format ...)
 (defun debug (format args)
   (log-format 'debug format args))
@@ -73,6 +82,9 @@
   (log-format 'notice format args))
 
 (defun warning (format args)
+  (log-format 'warning format args))
+
+(defun warn (format args)
   (log-format 'warning format args))
 
 (defun err (format args)
@@ -90,6 +102,12 @@
 (defun emergency (format args)
   (log-format 'emergency format args))
 
+(defun failure (format args)
+  (log-format 'emergency format args))
+
+(defun fail (format args)
+  (log-format 'emergency format args))
+
 ;;; Log functions with mod/func and message arguments
 (defun debug (mod func msg)
   (log-mod-func 'debug mod func msg))
@@ -101,6 +119,9 @@
   (log-mod-func 'notice mod func msg))
 
 (defun warning (mod func msg)
+  (log-mod-func 'warning mod func msg))
+
+(defun warn (mod func msg)
   (log-mod-func 'warning mod func msg))
 
 (defun err (mod func msg)
@@ -116,6 +137,12 @@
   (log-mod-func 'alert mod func msg))
 
 (defun emergency (mod func msg)
+  (log-mod-func 'emergency mod func msg))
+
+(defun failure (mod func msg)
+  (log-mod-func 'emergency mod func msg))
+
+(defun fail (mod func msg)
   (log-mod-func 'emergency mod func msg))
 
 ;;; Log functions with mod/func and format arguments for (io_lib:format ...)
@@ -144,6 +171,12 @@
   (log-mod-func-format 'alert mod func format args))
 
 (defun emergency (mod func format args)
+  (log-mod-func-format 'emergency mod func format args))
+
+(defun failure (mod func format args)
+  (log-mod-func-format 'emergency mod func format args))
+
+(defun fail (mod func format args)
   (log-mod-func-format 'emergency mod func format args))
 
 ;; Lager wrapper funcs

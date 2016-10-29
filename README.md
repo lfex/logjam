@@ -1,9 +1,9 @@
 # logjam
 
-[![Build Status][travis badge]][travis] 
-[![LFE Versions][lfe badge]][lfe] 
-[![Erlang Versions][erlang badge]][versions] 
-[![Tags][github tags badge]][github tags] 
+[![Build Status][travis badge]][travis]
+[![LFE Versions][lfe badge]][lfe]
+[![Erlang Versions][erlang badge]][versions]
+[![Tags][github tags badge]][github tags]
 [![Downloads][hex downloads]][hex package]
 
 [![Project Logo][logo]][logo-large]
@@ -97,8 +97,8 @@ appropriate lager configuration options set. For instance:
 Any legal lager configuration will work (as long as you translate it into LFE
 syntax first!).
 
-If you'd like to use use the custom log formatter (modeled after logging 
-formats common in Clojure applications), you can configure your handler like 
+If you'd like to use use the custom log formatter (modeled after logging
+formats common in Clojure applications), you can configure your handler like
 the following:
 
 ```cl
@@ -188,11 +188,11 @@ Now you'll be able to use logjam. The following log types are defined:
  * `debug`
  * `info`
  * `notice`
- * `warning`
+ * `warning` (supported with `warn` alias)
  * `error` (supported by both sets of `error` and `err` functions)
  * `critical`
  * `alert`
- * `emergency`
+ * `emergency` (supported with `fail` and `faiulre` aliases)
 
 Each of these has arity 1, 2, 3, and 4 functions of the same name:
 * arity 1: pass a message
