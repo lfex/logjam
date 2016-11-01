@@ -5,7 +5,7 @@
   {description, "A Logging Library for LFE (lager wrapper)"},
 
   %% The version of the application
-  {vsn, "0.5.0-rc1"},
+  {vsn, "0.5.0-rc2"},
 
   %% All modules used by the application.
   {modules,
