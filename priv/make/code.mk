@@ -1,5 +1,5 @@
 compile:
-	$(REBAR3) compile
+	@$(REBAR3) compile
 
 check:
 	@echo
@@ -7,7 +7,7 @@ check:
 	@echo "Running tests using Github Sources ..."
 	@echo "=================================="
 	@echo
-	$(REBAR3) as test lfe test
+	@$(REBAR3) as test lfe test
 
 check-gitlab:
 	@echo
@@ -15,7 +15,7 @@ check-gitlab:
 	@echo "Running tests using Gitlab Sources ..."
 	@echo "=================================="
 	@echo
-	$(REBAR3) as gitlab lfe test
+	@$(REBAR3) as gitlab lfe test
 
 check-hexpm: clean
 	@echo
@@ -24,7 +24,7 @@ check-hexpm: clean
 	@echo "==================================="
 	@echo
 	@$(REBAR3) as hexpm lfe clean
-	$(REBAR3) as hexpm lfe test
+	@$(REBAR3) as hexpm lfe test
 
 check-all: check check-gitlab check-hexpm
 
@@ -34,8 +34,8 @@ travis:
 	@if [ "$(REBAR_BUILD)" = "hexpm" ]; then make build-hexpm; make check-hexpm; fi;
 
 repl:
-	$(REBAR3) as $(REBAR_PROFILE) compile
-	$(LFE) -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "`
+	@$(REBAR3) as $(REBAR_PROFILE) compile
+	@$(LFE) -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "`
 
 shell:
 	@$(REBAR3) shell
@@ -65,7 +65,7 @@ build-github: clean
 	@echo "Building using Github Sources ..."
 	@echo "============================="
 	@echo
-	$(REBAR3) compile
+	@$(REBAR3) compile
 	@$(REBAR3) lock
 
 build-gitlab: clean
@@ -74,7 +74,7 @@ build-gitlab: clean
 	@echo "Building using Gitlab Sources ..."
 	@echo "============================="
 	@echo
-	$(REBAR3) as gitlab compile
+	@$(REBAR3) as gitlab compile
 	@$(REBAR3) as gitlab lock
 
 build-hexpm: clean
@@ -83,13 +83,13 @@ build-hexpm: clean
 	@echo "Building using Hex.pm Packages ..."
 	@echo "=============================="
 	@echo
-	$(REBAR3) as hexpm compile
+	@$(REBAR3) as hexpm compile
 	@$(REBAR3) as hexpm lock
 
 build-all: build-github build-gitlab build-hexpm
 
 publish: clean
-	$(REBAR3) as hexpm hex publish
+	@$(REBAR3) as hexpm hex publish
 
 setup-rebar3:
 	wget https://s3.amazonaws.com/rebar3/rebar3
