@@ -6,10 +6,10 @@
 (include-lib "logjam/include/logjam.lfe")
 
 (defun set-up ()
-  (logjam:setup))
+  (logjam:start))
 
 (defun tear-down (setup-result)
-  (application:stop 'logjam))
+  (logjam:stop))
 
 (deftestcase from-include (setup-result)
   (is (try (progn (logjam:info "Running test case mod-func ...") 'true)
