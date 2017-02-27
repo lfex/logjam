@@ -6,15 +6,18 @@
 
 (defun start (_start-type _start-args)
   (logjam-cfg:setup)
-  (lager:start)
-  (info "Starting logjam ...")
-  (application:start 'logjam)
-  `#(ok ,(self)))
+  (let ((lager-start (prog1
+                       (application:ensure_all_started 'lager)
+                       (lager:start))))
+    (info "Starting logjam ...")
+    (let ((logjam-start (application:start 'logjam)))
+      `(#(logjam ,logjam-start)
+        #(lager ,lager-start)))))
 
 (defun stop ()
   (info "Stopping logjam ...")
-  (application:stop 'lager)
-  (application:stop 'logjam))
+  `(#(logjam ,(application:stop 'logjam))
+    #(lager ,(application:stop 'lager))))
 
 (defun log (msg)
   (lager:log 'info '() msg))
