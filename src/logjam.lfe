@@ -7,10 +7,14 @@
 (defun start (_start-type _start-args)
   (logjam-cfg:setup)
   (lager:start)
+  (info "Starting logjam ...")
+  (application:start 'logjam)
   `#(ok ,(self)))
 
 (defun stop ()
-  (application:stop 'lager))
+  (info "Stopping logjam ...")
+  (application:stop 'lager)
+  (application:stop 'logjam))
 
 (defun log (msg)
   (lager:log 'info '() msg))
