@@ -8,7 +8,7 @@
 
 (defun get-color (cfg-key)
   (lcfg:get-in
-    (lcfg-log:get-logging-config)
+    (logjam-cfg:get-logging-config)
     `(colors ,cfg-key)))
 
 ; (defun color (cfg-key str)

@@ -31,5 +31,5 @@
     (logjam:info `#(c ,caller) "Checked log-level ~p." `(,level))))
 
 (defun color-opt ()
-  (lists:keyfind 'colored 1 (lcfg-log:get-logging-config)))
+  (lists:keyfind 'colored 1 (logjam-cfg:get-logging-config)))
 
