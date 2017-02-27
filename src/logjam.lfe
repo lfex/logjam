@@ -10,7 +10,7 @@
   `#(ok ,(self)))
 
 (defun stop ()
-  (applicaiton:stop 'lager))
+  (application:stop 'lager))
 
 (defun log (msg)
   (lager:log 'info '() msg))
