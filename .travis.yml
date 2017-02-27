@@ -11,13 +11,7 @@ script:
   - make travis
   #- make check-hexpm # XXX disabled due to Hex.pm failing on R15
 otp_release:
-  - 19.1
+  - 19.2
   - 18.3
   - 17.5
   - R16B03-1
-  - R15B03
-matrix:
-  # disabled due to Hex.pm failing on R15
-  exclude:
-  - otp_release: R15B03
-    env: REBAR_BUILD=hexpm
