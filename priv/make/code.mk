@@ -32,17 +32,17 @@ check-hexpm: clean
 check-all: check check-gitlab check-hexpm
 
 travis:
-	@if [ "$(REBAR_BUILD)" = "github" ]; then
-		make build-github
-		make check
-	fi
-	@if [ "$(REBAR_BUILD)" = "gitlab" ]; then
-		make build-gitlab
-		make check-gitlab
-	fi
-	@if [ "$(REBAR_BUILD)" = "hexpm" ]; then
-		make build-hexpm
-		make check-hexpm
+	@if [ "$(REBAR_BUILD)" = "github" ]; then \
+		make build-github; \
+		make check; \
+	fi;
+	@if [ "$(REBAR_BUILD)" = "gitlab" ]; then \
+		make build-gitlab; \
+		make check-gitlab; \
+	fi;
+	@if [ "$(REBAR_BUILD)" = "hexpm" ]; then \
+		make build-hexpm; \
+		make check-hexpm; \
 	fi
 
 repl:
