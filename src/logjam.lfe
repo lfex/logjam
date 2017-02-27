@@ -1,11 +1,16 @@
 (defmodule logjam
   (export all))
 
-(defun setup ()
-  (lcfg-log:setup))
-
 (defun start ()
-  (setup))
+  (start 'undefined '()))
+
+(defun start (_start-type _start-args)
+  (logjam-cfg:setup)
+  (lager:start)
+  `#(ok ,(self)))
+
+(defun stop ()
+  (applicaiton:stop 'lager))
 
 (defun log (msg)
   (lager:log 'info '() msg))
