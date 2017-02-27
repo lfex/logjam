@@ -7,7 +7,8 @@ check:
 	@echo "Running tests using Github Sources ..."
 	@echo "=================================="
 	@echo
-	@$(REBAR3) as test lfe test
+	@#@$(REBAR3) as test lfe test
+	@$(REBAR3) as test eunit
 
 check-gitlab:
 	@echo
@@ -15,7 +16,8 @@ check-gitlab:
 	@echo "Running tests using Gitlab Sources ..."
 	@echo "=================================="
 	@echo
-	@$(REBAR3) as gitlab lfe test
+	@#$(REBAR3) as gitlab lfe test
+	@$(REBAR3) as gitlab eunit
 
 check-hexpm: clean
 	@echo
@@ -24,17 +26,27 @@ check-hexpm: clean
 	@echo "==================================="
 	@echo
 	@$(REBAR3) as hexpm lfe clean
-	@$(REBAR3) as hexpm lfe test
+	@#$(REBAR3) as hexpm lfe test
+	@$(REBAR3) as hexpm eunit
 
 check-all: check check-gitlab check-hexpm
 
 travis:
-	@if [ "$(REBAR_BUILD)" = "github" ]; then make build-github; make check; fi;
-	@if [ "$(REBAR_BUILD)" = "gitlab" ]; then make build-gitlab; make check-gitlab; fi;
-	@if [ "$(REBAR_BUILD)" = "hexpm" ]; then make build-hexpm; make check-hexpm; fi;
+	@if [ "$(REBAR_BUILD)" = "github" ]; then
+		make build-github
+		make check
+	fi
+	@if [ "$(REBAR_BUILD)" = "gitlab" ]; then
+		make build-gitlab
+		make check-gitlab
+	fi
+	@if [ "$(REBAR_BUILD)" = "hexpm" ]; then
+		make build-hexpm
+		make check-hexpm
+	fi
 
 repl:
-	@$(REBAR3) as $(REBAR_PROFILE) compile
+	$(REBAR3) as $(REBAR_PROFILE) compile
 	@$(LFE) -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "`
 
 shell:
