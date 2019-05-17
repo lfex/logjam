@@ -278,7 +278,7 @@ ok
 
 Apache Version 2 License
 
-Copyright © 2015-2016, Duncan McGreggor <oubiwann@gmail.com>
+Copyright © 2015-2019, Duncan McGreggor <oubiwann@gmail.com>
 
 
 [](Named page links below ...)
@@ -292,8 +292,8 @@ Copyright © 2015-2016, Duncan McGreggor <oubiwann@gmail.com>
 [travis]: https://travis-ci.org/lfex/logjam
 [travis badge]: https://img.shields.io/travis/lfex/logjam.svg
 [lfe]: https://github.com/rvirding/lfe
-[lfe badge]: https://img.shields.io/badge/lfe-1.2.0-blue.svg
-[erlang badge]: https://img.shields.io/badge/erlang-R15%20to%2019.1-blue.svg
+[lfe badge]: https://img.shields.io/badge/lfe-1.3.0-blue.svg
+[erlang badge]: https://img.shields.io/badge/erlang-17.5%20to%2022.0-blue.svg
 [versions]: https://github.com/lfex/logjam/blob/master/.travis.yml
 [github tags]: https://github.com/lfex/logjam/tags
 [github tags badge]: https://img.shields.io/github/tag/lfex/logjam.svg
