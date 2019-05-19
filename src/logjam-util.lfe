@@ -1,12 +1,12 @@
 (defmodule logjam-util
   (export all))
 
-(defun get-version ()
+(defun version ()
   (lutil:get-app-version 'logjam))
 
-(defun get-versions ()
+(defun versions ()
   (++ (lutil:get-versions)
-      `(#(logjam ,(get-version)))))
+      `(#(logjam ,(version)))))
 
 (defun check ()
   (let ((caller (logjam:caller)))
@@ -32,4 +32,3 @@
 
 (defun color-opt ()
   (lists:keyfind 'colored 1 (logjam-cfg:get-logging-config)))
-
