@@ -1,8 +1,9 @@
 (defmodule logjam
+  (behaviour application)
   (export all))
 
 (defun start ()
-  (start 'undefined '()))
+  (start 'normal '()))
 
 (defun start (_start-type _start-args)
   (logjam-cfg:setup)
@@ -18,6 +19,10 @@
   (info "Stopping logjam ...")
   `(#(logjam ,(application:stop 'logjam))
     #(lager ,(application:stop 'lager))))
+
+(defun stop (_state)
+  (stop)
+  'ok)
 
 (defun log (msg)
   (lager:log 'info '() msg))
