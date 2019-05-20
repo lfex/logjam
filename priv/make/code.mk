@@ -47,7 +47,7 @@ travis:
 
 repl:
 	$(REBAR3) as $(REBAR_PROFILE) compile
-	@$(LFE) -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "` -s lager
+	@$(LFE) -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "` -s logjam
 
 shell:
 	@$(REBAR3) shell
