@@ -1,6 +1,6 @@
 (defmodule logjamd
   (behaviour gen_server)
-  (export (start_link 0) (start_link 1)
+  (export (start_link 1)
           (stop 0)
           (init 1)
           (terminate 2)
@@ -14,14 +14,12 @@
 
 ;;; gen_server implementation
 
-(defun start_link ()
-  (start_link '()))
-
 (defun start_link (args)
-  (let ((link (gen_server:start `#(local ,(MODULE))
-                                (MODULE)
-                                (read-server-data)
-                                args)))
+  (let* ((options '())
+         (link (gen_server:start_link `#(local ,(MODULE))
+                                      (MODULE)
+                                      args
+                                      options)))
     (logjam:debug "Linked server status: ~p" (list link))
     link))
 
@@ -45,9 +43,9 @@
 
 (defun handle_cast
   (('reload _state-data)
-    `#(noreply ,(read-server-data)))
+    `#(noreply ,(logjam-cfg:read-config)))
   ((`#(reload ,key) state-data)
-    (let* ((disk-config (read-server-data))
+    (let* ((disk-config (logjam-cfg:read-config))
            (reset-config (proplists:lookup key disk-config)))
       `#(noreply ,(lists:merge (list reset-config) state-data))))
   ((`#(set ,config-data) _state-data)
@@ -96,8 +94,3 @@
 
 (defun get-config (keys)
   (gen_server:call (MODULE) `#(get ,keys)))
-
-;;; utility functions
-
-(defun read-server-data ()
-  (lists:sort (logjam-cfg:config)))

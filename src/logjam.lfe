@@ -201,7 +201,7 @@
 (defun fail (mod func format args)
   (log-mod-func-format 'emergency mod func format args))
 
-;; Lager wrapper funcs
+;; XXX move into lager backend
 (defun set-level (log-level)
   (set-level 'lager_console_backend log-level))
 
