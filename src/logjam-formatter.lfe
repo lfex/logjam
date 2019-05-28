@@ -6,16 +6,10 @@
 (defun no-color (x)
   x)
 
-(defun get-color (cfg-key)
-  (lcfg:get-in
-    (logjam-cfg:get-logging-config)
-    `(colors ,cfg-key)))
-
-; (defun color (cfg-key str)
-;   (funcall (get-color cfg-key) str))
-
-(defun color (cfg-key str)
-  (erlang:apply 'erlang 'apply (++ (get-color cfg-key) `((,str)))))
+(defun color (color-key str)
+  (erlang:apply 'erlang 
+                'apply 
+                (++ (logjam-cfg:color color-key) `((,str)))))
 
 (defun format (lager-msg format-config)
   (format lager-msg format-config '()))
@@ -89,11 +83,11 @@
   ((mod func-arity #(colored false))
     (++ mod ":" func-arity " "))
   ((mod func arity)
-    (format-func mod (++ func "/" arity) (logjam-util:color-opt))))
+    (format-func mod (++ func "/" arity) (logjam-cfg:colored-opt))))
 
 (defun format-func
   ((mod func-arity) (when (is_atom mod))
-    (format-func (atom_to_list mod) func-arity (logjam-util:color-opt))))
+    (format-func (atom_to_list mod) func-arity (logjam-cfg:colored-opt))))
 
 (defun format-func (pid)
   (let ((`#(current_function #(,m ,f ,a)) (process_info pid 'current_function)))
@@ -108,7 +102,7 @@
   ;   (io_lib:format "~p" `(,data))))
 
 (defun format-msg (msg)
-  (format-msg msg (logjam-util:color-opt)))
+  (format-msg msg (logjam-cfg:color?)))
 
 (defun format-msg
   ((msg #(colored true))
