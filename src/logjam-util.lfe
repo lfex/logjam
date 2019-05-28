@@ -30,9 +30,6 @@
                                           " ... "))
     (logjam:info `#(c ,caller) "Checked log-level ~p." `(,level))))
 
-(defun color-opt ()
-  (lists:keyfind 'colored 1 (logjam-cfg:get-logging-config)))
-
 (defun erl-version ()
   (list_to_integer (erlang:system_info 'otp_release)))
 

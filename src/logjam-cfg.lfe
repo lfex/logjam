@@ -71,6 +71,15 @@
 (defun get (keys)
   (logjamd:get-config keys))
 
+(defun colored-opt ()
+  (proplists:lookup 'colored (get)))
+
+(defun color? ()
+  (get '(colored)))
+
+(defun color (color-key)
+  (get `(colors ,color-key)))
+
 ;;; Deprecated functions for file-based API
 
 (defun get-logging-config ()
