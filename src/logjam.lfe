@@ -1,29 +1,31 @@
 (defmodule logjam
-  (behaviour application)
-  (export all))
+  (export (start 0)
+          (stop 0))
+  (export (caller 0) (caller 1)
+          (set-level 1) (set-level 2) (set-level 3)
+          (log 1) (log 2)
+          (debug 1) (debug 2) (debug 3) (debug 4)
+          (info 1) (info 2) (info 3) (info 4)
+          (notice 1) (notice 2) (notice 3) (notice 4)
+          (warn 1) (warn 2) (warn 3) (warn 4)
+          (warning 1) (warning 2) (warning 3) (warning 4)
+          (err 1) (err 2) (err 3) (err 4)
+          (error 1) (error 2) (error 3) (error 4)
+          (critical 1) (critical 2) (critical 3) (critical 4)
+          (alert 1) (alert 2) (alert 3) (alert 4)
+          (emergency 1) (emergency 2) (emergency 3) (emergency 4)
+          (fail 1) (fail 2) (fail 3) (fail 4)
+          (failure 1) (failure 2) (failure 3) (failure 4)))
+
+;;; Logjam control API
 
 (defun start ()
-  (start 'normal '()))
-
-(defun start (_start-type _start-args)
-  (logjam-cfg:setup)
-  (let ((lager-start (prog1
-                       (application:ensure_all_started 'lager)
-                       (lager:start))))
-    (info "Starting logjam ...")
-    (let ((logjam-start (application:start 'logjam)))
-      `(#(logjam ,logjam-start)
-        #(lager ,lager-start)))))
+  (application:start 'logjam))
 
 (defun stop ()
-  (info "Stopping logjam ...")
-  `(#(logjam ,(application:stop 'logjam))
-    #(lager ,(application:stop 'lager))))
+  (application:stop 'logjam))
 
-(defun stop (_state)
-  (stop)
-  'ok)
-
+;; XXX move these into a logjam-backend module for dispatching
 (defun log (msg)
   (lager:log 'info '() msg))
 
@@ -173,6 +175,9 @@
   (log-mod-func-format 'notice mod func format args))
 
 (defun warning (mod func format args)
+  (log-mod-func-format 'warning mod func format args))
+
+(defun warn (mod func format args)
   (log-mod-func-format 'warning mod func format args))
 
 (defun err (mod func format args)

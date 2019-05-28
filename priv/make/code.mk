@@ -50,7 +50,8 @@ repl:
 	@$(LFE) -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "` -s logjam
 
 shell:
-	@$(REBAR3) shell
+	$(REBAR3) as $(REBAR_PROFILE) compile
+	@erl -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "` -s logjam
 
 clean:
 	@$(REBAR3) clean

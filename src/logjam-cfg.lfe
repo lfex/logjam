@@ -77,7 +77,28 @@
   (config)
   )
 
-;;; Deprecated functions
+;;; logjamd alias functions for config stored in memory; note that each 
+;;  function in this API depends upon the logjamd gen_serve to be running.
+
+(defun reload ()
+  (logjamd:reload-config))
+
+(defun reload (key)
+  (logjamd:reload-config key))
+
+(defun set (config-data)
+  (logjamd:set-config config-data))
+
+(defun set (key value)
+  (logjamd:set-config key value))
+
+(defun get ()
+  (logjamd:get-config))
+
+(defun get (keys)
+  (logjamd:get-config keys))
+
+;;; Deprecated functions for file-based API
 
 (defun get-logging-config ()
   "DEPRECATED: Use `config` instead."
