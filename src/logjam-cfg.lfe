@@ -10,55 +10,27 @@
         (read-global))))
 
 (defun read-local ()
-  (proplists:get_value 'logging (lcfg-file:parse-local)))
+  (lists:sort 
+    (proplists:get_value 'logging (lcfg-file:parse-local))))
 
 (defun read-global ()
-  (proplists:get_value 'logging (lcfg-file:parse-global)))
+  (lists:sort
+    (proplists:get_value 'logging (lcfg-file:parse-global))))
 
-;;; Support for in-memory config data
+;;; Pre-startup Config API
 
-(defun ets-table () 'logjam)
-(defun cfg-key () 'config)
-
-(defun create-config-table
-  ()
-  (ets:new (ets-table) `(bag named_table)))
-
-(defun insert-config
-  ()
-  (ets:insert (ets-table) `#(,(cfg-key) ,(read-config))))
-
-(defun lookup-config
-  ()
-  (proplists:get_value 
-    (cfg-key) 
-    (ets:lookup (ets-table) (cfg-key))))
-
-;;; Config API
-
+;; Note that `setup` is intended to be called before even lager is started,
+;; so logjam isn't started. As such, for this call, the config values can't 
+;; be read from the server, but instead need to be read from the file.
 (defun setup ()
-  (insert-config)
-  (setup (lookup-config)))
+  (setup (read-config)))
 
 (defun setup (config)
-  (case (proplists:get_value (backend config) config)
+  (case (logjam-util:backend)
     ('lager (setup-lager config))
     ('logger (setup-logger config))))
 
-(defun backend
-  ()
-  (backend (lookup-config)))
-
-(defun backend
-  (config)
-  (proplists:get_value 'backend config))
-
-(defun options
-  ()
-  (options (lookup-config)))
-
-(defun options
-  (config)
+(defun options (config)
   (proplists:get_value 'options config))
 
 ;;; Lager backend functions
@@ -68,17 +40,18 @@
   (application:set_env
     'lager
     'handlers
-    (options)))
+    (options config)))
 
 ;;; Logger backend functions
 
 ;; TBD
-(defun setup-logger
-  (config)
+(defun setup-logger (config)
   )
 
+;;; Post-startup Config API
+
 ;;; logjamd alias functions for config stored in memory; note that each 
-;;  function in this API depends upon the logjamd gen_serve to be running.
+;;;  function in this API depends upon the logjamd gen_serve to be running.
 
 (defun reload ()
   (logjamd:reload-config))
