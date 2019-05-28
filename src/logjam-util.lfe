@@ -32,3 +32,10 @@
 
 (defun color-opt ()
   (lists:keyfind 'colored 1 (logjam-cfg:get-logging-config)))
+
+(defun erl-version ()
+  (list_to_integer (erlang:system_info 'otp_release)))
+
+(defun backend ()
+  (if (> (erl-version) 20) 'logger
+      'lager))

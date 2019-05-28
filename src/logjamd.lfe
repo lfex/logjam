@@ -1,6 +1,6 @@
-(defmodule logjam-srv
+(defmodule logjamd
   (behaviour gen_server)
-  (export (start_link 0)
+  (export (start_link 0) (start_link 1)
           (stop 0)
           (init 1)
           (terminate 2)
@@ -15,10 +15,15 @@
 ;;; gen_server implementation
 
 (defun start_link ()
-  (gen_server:start `#(local ,(MODULE))
-                    (MODULE)
-                    (read-server-data)
-                    '()))
+  (start_link '()))
+
+(defun start_link (args)
+  (let ((link (gen_server:start `#(local ,(MODULE))
+                                (MODULE)
+                                (read-server-data)
+                                args)))
+    (logjam:debug "Linked server status: ~p" (list link))
+    link))
 
 (defun stop ()
   (gen_server:cast (MODULE) 'stop))
@@ -32,9 +37,10 @@
   ((`#(EXIT ,_pid normal) state-data)
    `#(noreply ,state-data))
   ((`#(EXIT ,pid ,reason) state-data)
-   (io:format "Process ~p exited! (Reason: ~p)~n" `(,pid ,reason))
+   (logjam:debug "Process ~p exited! (Reason: ~p)" `(,pid ,reason))
    `#(noreply ,state-data))
-  ((_msg state-data)
+  ((msg state-data)
+   (logjam:debug "Unhandled info message: ~p" (list msg))
    `#(noreply ,state-data)))
 
 (defun handle_cast
@@ -49,7 +55,10 @@
   ((`#(set ,key ,value) state-data)
     `#(noreply ,(lists:merge (list (tuple key value)) state-data)))
   (('stop state-data)
-    `#(stop normal ,state-data)))
+    `#(stop normal ,state-data))
+  ((msg state-data)
+   (logjam:debug "Unhandled cast message: ~p" (list msg))
+   `#(noreply ,state-data)))
 
 (defun handle_call
   (('get _caller state-data)
@@ -58,7 +67,8 @@
     `#(reply 
        ,(lists:foldl #'proplists:get_value/2 state-data keys) 
        ,state-data))
-  ((message _caller state-data)
+  ((msg _caller state-data)
+   (logjam:debug "Unhandled call message: ~p" (list msg))
     `#(reply #(error "Unknown command") ,state-data)))
 
 (defun terminate (_reason _state-data)
