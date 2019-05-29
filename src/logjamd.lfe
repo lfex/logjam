@@ -42,6 +42,8 @@
    `#(noreply ,state-data)))
 
 (defun handle_cast
+  ((`#(level ,level) state-data)
+    )
   (('reload _state-data)
     `#(noreply ,(logjam-cfg:read-config)))
   ((`#(reload ,key) state-data)

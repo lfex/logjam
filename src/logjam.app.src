@@ -30,8 +30,6 @@
   %% on the command line. can be fetched with gas:get_env
   {env, []},
 
-  
-
   %% Package metadata:
   {pkg_name, logjam},
   {maintainers, ["Duncan McGreggor"]},
