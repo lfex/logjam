@@ -46,11 +46,11 @@ travis:
 	fi
 
 repl:
-	$(REBAR3) as $(REBAR_PROFILE) compile
+	@$(REBAR3) as $(REBAR_PROFILE) compile
 	@$(LFE) -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "` -s logjam
 
 shell:
-	$(REBAR3) as $(REBAR_PROFILE) compile
+	@$(REBAR3) as $(REBAR_PROFILE) compile
 	@erl -pa `$(REBAR3) as $(REBAR_PROFILE) path -s " -pa "` -s logjam
 
 clean:

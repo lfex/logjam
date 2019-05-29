@@ -20,7 +20,7 @@
                                       (MODULE)
                                       args
                                       options)))
-    (logjam:debug "Linked server status: ~p" (list link))
+    (logjam:debug "Linked server status: ~p" `(,link))
     link))
 
 (defun stop ()
@@ -35,10 +35,16 @@
   ((`#(EXIT ,_pid normal) state-data)
    `#(noreply ,state-data))
   ((`#(EXIT ,pid ,reason) state-data)
-   (logjam:debug "Process ~p exited! (Reason: ~p)" `(,pid ,reason))
+   (logjam:debug 'logjamd
+                 'handle_info/2
+                 "Process ~p exited! (Reason: ~p)"
+                 `(,pid ,reason))
    `#(noreply ,state-data))
   ((msg state-data)
-   (logjam:debug "Unhandled info message: ~p" (list msg))
+   (logjam:debug 'logjamd
+                 'handle_info/2
+                 "Unhandled info message: ~p"
+                 `(,msg))
    `#(noreply ,state-data)))
 
 (defun handle_cast
@@ -49,26 +55,32 @@
   ((`#(reload ,key) state-data)
     (let* ((disk-config (logjam-cfg:read-config))
            (reset-config (proplists:lookup key disk-config)))
-      `#(noreply ,(lists:merge (list reset-config) state-data))))
+      `#(noreply ,(lists:merge `(,reset-config) state-data))))
   ((`#(set ,config-data) _state-data)
     `#(noreply ,config-data))
   ((`#(set ,key ,value) state-data)
-    `#(noreply ,(lists:merge (list (tuple key value)) state-data)))
+    `#(noreply ,(lists:merge `(,(tuple key value)) state-data)))
   (('stop state-data)
     `#(stop normal ,state-data))
   ((msg state-data)
-   (logjam:debug "Unhandled cast message: ~p" (list msg))
+   (logjam:debug 'logjamd
+                 'handle_cast/2
+                 "Unhandled cast message: ~p"
+                 `(,msg))
    `#(noreply ,state-data)))
 
 (defun handle_call
   (('get _caller state-data)
     `#(reply ,state-data ,state-data))
   ((`#(get ,keys) _caller state-data)
-    `#(reply 
-       ,(lists:foldl #'proplists:get_value/2 state-data keys) 
+    `#(reply
+       ,(lists:foldl #'proplists:get_value/2 state-data keys)
        ,state-data))
   ((msg _caller state-data)
-   (logjam:debug "Unhandled call message: ~p" (list msg))
+   (logjam:debug 'logjamd
+                 'handle_call3/
+                 "Unhandled call message: ~p"
+                 `(,msg))
     `#(reply #(error "Unknown command") ,state-data)))
 
 (defun terminate (_reason _state-data)

@@ -8,27 +8,27 @@
   ;; (logjam:debug "Starting supervision tree with data: ~p" (list config-data))
   (let ((link (supervisor:start_link `#(local ,(MODULE))
                                      (MODULE)
-                                     (list config-data))))
-    (logjam:debug "Linked supervisor status: ~p" (list link))
+                                     `(,config-data))))
+    (logjam:debug "Linked supervisor status: ~p" `(,link))
     link))
 
 (defun init (config-data)
   (logjam:debug "Initializing logjam ...")
-  (let* ((children-specs (list (child-spec config-data)))
+  (let* ((children-specs `(,(child-spec config-data)))
          (check (supervisor:check_childspecs children-specs)))
     ;; (logjam:debug "Children specs: ~p" children-specs)
-    (logjam:debug "Supervisor child specs validation: ~p" (list check))
+    (logjam:debug "Supervisor child specs validation: ~p" `(,check))
     (logjam:debug "Logjam initialized.")
     `#(ok #(,(sup-flags)
             ,children-specs))))
 
 (defun status ()
   (supervisor:count_children (MODULE)))
-  
+
 ;;; Setup functions
 
 (defun sup-flags ()
-  #(one_for_all 
+  #(one_for_all
     1
     3000))
 

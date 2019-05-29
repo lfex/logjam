@@ -24,7 +24,7 @@
     (logjam:debug "Starting logjam application ...")
     ;; (logjam:debug "Using config data: ~p" (list config-data))
     (let ((sup (logjammgr:start_link config-data)))
-      (logjam:debug "Supervisor start status: ~p" (list sup))
+      (logjam:debug 'logjamapp 'start/2 "Supervisor start status: ~p" (list sup))
       sup)))
 
 (defun stop ()

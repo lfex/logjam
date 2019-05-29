@@ -3,7 +3,6 @@
 
 (defun no-color (x)
   x)
-
 (defun format (log-record format-config)
   (format log-record format-config '()))
 

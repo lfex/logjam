@@ -21,6 +21,9 @@
   (application:start 'logjam))
 
 (defun stop ()
+  (logjam:info 'logjam
+               'stop/0
+               "Shutting down logjam application ...")
   (application:stop 'logjam))
 
 (defun log-format
