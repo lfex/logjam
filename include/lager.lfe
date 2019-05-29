@@ -8,7 +8,7 @@
   timestamp
   message)
 
-(defun loaded-logjam ()
+(defun loaded-lager ()
   "This is just a dummy function for display purposes when including from the
   REPL (the last function loaded has its name printed in stdout).
 

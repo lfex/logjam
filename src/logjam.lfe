@@ -2,8 +2,6 @@
   (export (start 0)
           (stop 0))
   (export (caller 0) (caller 1)
-          (set-level 1) (set-level 2) (set-level 3)
-          (log 1) (log 2)
           (debug 1) (debug 2) (debug 3) (debug 4)
           (info 1) (info 2) (info 3) (info 4)
           (notice 1) (notice 2) (notice 3) (notice 4)
@@ -25,20 +23,13 @@
 (defun stop ()
   (application:stop 'logjam))
 
-;; XXX move these into a logjam-backend module for dispatching
-(defun log (msg)
-  (lager:log 'info '() msg))
-
-(defun log (level msg)
-  (lager:log level '() msg))
-
 (defun log-format
   ((level `#(c ,caller) msg)
-    (log level (++ caller msg)))
+    (logjam-backend:log level (++ caller msg)))
   ((level pid msg) (when (is_pid pid))
-    (log level (++ (logjam-formatter:format-func pid) msg)))
+    (logjam-backend:log level (++ (logjam-formatter:format-func pid) msg)))
   ((level format args)
-    (log level (io_lib:format format args))))
+    (logjam-backend:log level (io_lib:format format args))))
 
 (defun log-mod-func
   ((level `#(c ,caller) format args)
@@ -46,7 +37,7 @@
   ((level pid format args) (when (is_pid pid))
     (log-format level (++ (logjam-formatter:format-func pid) format) args))
   ((level mod func msg)
-    (log level
+    (logjam-backend:log level
          (++ (logjam-formatter:format-func mod func)
              (logjam-formatter:format-msg msg)))))
 
@@ -55,40 +46,40 @@
 
 ;;; Straight-up log function wrappers
 (defun debug (msg)
-  (log 'debug msg))
+  (logjam-backend:log 'debug msg))
 
 (defun info (msg)
-  (log 'info msg))
+  (logjam-backend:log 'info msg))
 
 (defun notice (msg)
-  (log 'notice msg))
+  (logjam-backend:log 'notice msg))
 
 (defun warning (msg)
-  (log 'warning msg))
+  (logjam-backend:log 'warning msg))
 
 (defun warn (msg)
-  (log 'warning msg))
+  (logjam-backend:log 'warning msg))
 
 (defun err (msg)
-  (log 'error msg))
+  (logjam-backend:log 'error msg))
 
 (defun error (msg)
-  (log 'error msg))
+  (logjam-backend:log 'error msg))
 
 (defun critical (msg)
-  (log 'critical msg))
+  (logjam-backend:log 'critical msg))
 
 (defun alert (msg)
-  (log 'alert msg))
+  (logjam-backend:log 'alert msg))
 
 (defun emergency (msg)
-  (log 'emergency msg))
+  (logjam-backend:log 'emergency msg))
 
 (defun failure (msg)
-  (log 'emergency msg))
+  (logjam-backend:log 'emergency msg))
 
 (defun fail (msg)
-  (log 'emergency msg))
+  (logjam-backend:log 'emergency msg))
 
 ;;; Log function wrappers with args for (io_lib:format ...)
 (defun debug (format args)
@@ -200,16 +191,6 @@
 
 (defun fail (mod func format args)
   (log-mod-func-format 'emergency mod func format args))
-
-;; XXX move into lager backend
-(defun set-level (log-level)
-  (set-level 'lager_console_backend log-level))
-
-(defun set-level (lager-backend log-level)
-  (lager:set_loglevel lager-backend log-level))
-
-(defun set-level (lager-backend file-name log-level)
-  (lager:set_loglevel lager-backend file-name log-level))
 
 ;; Convenience funcs
 (defun caller

@@ -4,8 +4,6 @@
 (include-lib "logjam/include/lager.lfe")
 
 (defun setup (options)
-  (io:format "Running setup ...~n")
-  (io:format "Lager options:~n~p~n" (list options))
   (application:load 'lager)
   (application:set_env
     'lager

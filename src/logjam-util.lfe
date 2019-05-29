@@ -33,6 +33,12 @@
 (defun erl-version ()
   (list_to_integer (erlang:system_info 'otp_release)))
 
-(defun backend ()
-  (if (> (erl-version) 20) 'logger
-      'lager))
+(defun make-printable
+  ((a) (when (is_atom a))
+    (atom_to_list a))
+  ((p) (when (is_pid p))
+    (pid_to_list p))
+  ((l) (when (orelse (is_list l) (is_binary l)))
+    l)
+  ((other)
+    (io_lib:format "~p" `(,other))))

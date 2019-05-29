@@ -18,40 +18,18 @@
     (proplists:get_value 'logging (lcfg-file:parse-global))))
 
 ;;; Pre-startup Config API
-
-;; Note that `setup` is intended to be called before even lager is started,
-;; so logjam isn't started. As such, for this call, the config values can't 
-;; be read from the server, but instead need to be read from the file.
+;;;
+;;; Note that `setup` is intended to be called before any logging backend
+;;; is started, and thus before logjam itself is started. As such, for this
+;;; call, the config values can't be read from the server, but instead need
+;;; to be read from the file.
 (defun setup ()
-  (setup (read-config)))
-
-(defun setup (config)
-  (case (logjam-util:backend)
-    ('lager (setup-lager config))
-    ('logger (setup-logger config))))
-
-(defun options (config)
-  (proplists:get_value 'options config))
-
-;;; Lager backend functions
-
-(defun setup-lager (config)
-  (application:load 'lager)
-  (application:set_env
-    'lager
-    'handlers
-    (options config)))
-
-;;; Logger backend functions
-
-;; TBD
-(defun setup-logger (config)
-  )
+  (logjam-backend:setup (read-config)))
 
 ;;; Post-startup Config API
-
+;;;
 ;;; logjamd alias functions for config stored in memory; note that each 
-;;;  function in this API depends upon the logjamd gen_serve to be running.
+;;; function in this API depends upon the logjamd gen_serve to be running.
 
 (defun reload ()
   (logjamd:reload-config))
@@ -66,10 +44,18 @@
   (logjamd:set-config key value))
 
 (defun get ()
-  (logjamd:get-config))
+  (try
+    (logjamd:get-config)
+    (catch 
+      (`#(,_ #(noproc ,_) ,_)
+        (read-config)))))
 
 (defun get (keys)
-  (logjamd:get-config keys))
+  (try
+    (logjamd:get-config keys)
+    (catch 
+      (`#(,_ #(noproc ,_) ,_)
+        (read-config)))))
 
 (defun colored-opt ()
   (proplists:lookup 'colored (get)))
@@ -77,8 +63,13 @@
 (defun color? ()
   (get '(colored)))
 
-(defun color (color-key)
+(defun get-color (color-key)
   (get `(colors ,color-key)))
+
+(defun color (color-key str)
+  (erlang:apply 'erlang
+                'apply
+                (++ (get-color color-key) `((,str)))))
 
 ;;; Deprecated functions for file-based API
 

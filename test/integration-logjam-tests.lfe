@@ -3,7 +3,7 @@
   (export all))
 
 (include-lib "ltest/include/ltest-macros.lfe")
-(include-lib "logjam/include/logjam.lfe")
+(include-lib "logjam/include/lager.lfe")
 
 (defun set-up ()
   (logjam:start))
