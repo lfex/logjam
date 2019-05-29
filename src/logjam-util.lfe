@@ -42,3 +42,6 @@
     l)
   ((other)
     (io_lib:format "~p" `(,other))))
+
+(defun get-in (data keys)
+  (lists:foldl #'proplists:get_value/2 data keys))

@@ -71,6 +71,12 @@
                 'apply
                 (++ (get-color color-key) `((,str)))))
 
+(defun lager-handlers ()
+  (get '(backend lager handlers)))
+
+(defun lager-handlers (config)
+  (logjam-util:get-in config '(backend lager handlers)))
+
 ;;; Deprecated functions for file-based API
 
 (defun get-logging-config ()

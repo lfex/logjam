@@ -1,9 +1,6 @@
 (defmodule logjam-backend
   (export all))
 
-(defun options (config)
-  (proplists:get_value 'options config))
-
 (defun detect ()
   (if (> (logjam-util:erl-version) 20) 'logger
       'lager))
@@ -19,7 +16,7 @@
 ;; to be read from the file.
 (defun setup (config)
   (case (detect)
-    ('lager (logjam-backend-lager:setup (options config)))
+    ('lager (logjam-backend-lager:setup (logjam-cfg:lager-handlers config)))
     ('logger (logjam-backend-logger:setup config))))
 
 (defun log (msg)

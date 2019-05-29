@@ -74,7 +74,7 @@
     `#(reply ,state-data ,state-data))
   ((`#(get ,keys) _caller state-data)
     `#(reply
-       ,(lists:foldl #'proplists:get_value/2 state-data keys)
+       ,(logjam-util:get-in state-data keys)
        ,state-data))
   ((msg _caller state-data)
    (logjam:debug 'logjamd

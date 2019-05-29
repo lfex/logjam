@@ -3,12 +3,12 @@
 
 (include-lib "logjam/include/lager.lfe")
 
-(defun setup (options)
+(defun setup (handlers-config)
   (application:load 'lager)
   (application:set_env
     'lager
     'handlers
-    options))
+    handlers-config))
 
 (defun handlers ()
   (application:get_env 'lager 'handlers))
