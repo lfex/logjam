@@ -155,8 +155,8 @@ Changelog
 [org]: https://github.com/lfex
 [github]: https://github.com/lfex/logjam
 [gitlab]: https://gitlab.com/lfex/logjam
-[gh-actions-badge]: https://github.com/lfex/ltest/workflows/ci%2Fcd/badge.svg
-[gh-actions]: https://github.com/lfex/ltest/actions
+[gh-actions-badge]: https://github.com/lfex/logjam/workflows/ci%2Fcd/badge.svg
+[gh-actions]: https://github.com/lfex/logjam/actions
 [lfe]: https://github.com/rvirding/lfe
 [lfe badge]: https://img.shields.io/badge/lfe-1.3.0-blue.svg
 [erlang badge]: https://img.shields.io/badge/erlang-17.5%20to%2022.0-blue.svg
