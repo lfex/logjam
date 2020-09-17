@@ -1,10 +1,12 @@
-flatlog
-=====
+# logjam
 
-A custom formatter for the logger application that turns maps into single line text logs
+[![Build Status][gh-actions-badge]][gh-actions] [![LFE Versions][lfe badge]][lfe] [![Erlang Versions][erlang badge]][versions] [![Tags][github tags badge]][github tags]
 
-Why?
-----
+[![Project Logo][logo]][logo-large]
+
+*A custom formatter for the Erlang logger application that produces human-readable output*
+
+## Why?
 
 Structured logging is a better approach to logging in general. Fields are more clearly defined, tool-assisted parsing and consuming of logs is simpler, and the structure is amenable to good filtering in global or handler filters for the Erlang `logger` library.
 
@@ -22,8 +24,7 @@ This can be done transparently and after the fact, without major structural impa
 
 This formatter focuses on providing a text-based single-line format for structured logs, which can be human-readable, while being useful to people who use grep or awk to process logs, or want to forward them to a consumer like syslogd.
 
-Usage
------
+## Usage
 
 It is recommended that if you are providing a library, you do not add this
 project as a dependency. A code formatter of this kind should be added to a
@@ -36,7 +37,7 @@ Once the project is added, replace the formatter of the default handler (or add 
  {kernel, [
     {logger, [
         {handler, default, logger_std_h,
-         #{formatter => {flatlog, #{
+         #{formatter => {logjam, #{
             map_depth => 3,
             term_depth => 50
           }}}
@@ -93,7 +94,7 @@ at=some:code/0:15 unstructured_log="hello world"
 ```
 
 Do note that if you are building a release, you will need to manually add
-the `flatlog` dependency to your `relx` configuration, since it is
+the `logjam` dependency to your `relx` configuration, since it is
 technically not a direct dependency of any application in your system.
 
 Test
@@ -145,3 +146,21 @@ Changelog
 ---------
 
 - 0.1.1: added optionally colored logs (thanks @pfenoll)
+
+<!-- Named page links below: /-->
+
+[logo]: priv/images/logjam-crop-small.png
+[logo-large]: priv/images/logjam.jpg
+[screenshot]: priv/images/screenshot.png
+[org]: https://github.com/lfex
+[github]: https://github.com/lfex/logjam
+[gitlab]: https://gitlab.com/lfex/logjam
+[gh-actions-badge]: https://github.com/lfex/ltest/workflows/ci%2Fcd/badge.svg
+[gh-actions]: https://github.com/lfex/ltest/actions
+[lfe]: https://github.com/rvirding/lfe
+[lfe badge]: https://img.shields.io/badge/lfe-1.3.0-blue.svg
+[erlang badge]: https://img.shields.io/badge/erlang-17.5%20to%2022.0-blue.svg
+[versions]: https://github.com/lfex/logjam/blob/master/.travis.yml
+[github tags]: https://github.com/lfex/logjam/tags
+[github tags badge]: https://img.shields.io/github/tag/lfex/logjam.svg
+[github downloads]: https://img.shields.io/github/downloads/lfex/logjam/total.svg

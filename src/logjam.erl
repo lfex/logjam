@@ -5,7 +5,7 @@
 %%% The module honors the standard configuration of the kernel's default
 %%% logger formatter regarding: max depth, templates.
 %%% @end
--module(flatlog).
+-module(logjam).
 
 %% API exports
 -export([format/2]).

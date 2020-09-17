@@ -1,4 +1,4 @@
--module(flatlog_SUITE).
+-module(logjam_SUITE).
 -compile(export_all).
 -include_lib("common_test/include/ct.hrl").
 -include_lib("stdlib/include/assert.hrl").
@@ -11,7 +11,7 @@ term_depth() ->
 term_depth(_) ->
     ?assertEqual(
        "\"[\\\"01234567890123456789\\\",abc,[d,e|...]]\"",
-        lists:flatten(flatlog:to_string(
+        lists:flatten(logjam:to_string(
           ["01234567890123456789",abc,[d,e,[f,g,h]]]
           , #{term_depth => 6}
         ))
@@ -29,7 +29,7 @@ map_depth(_) ->
     ?assertEqual(
         "a_f=g a_b_c=... 1_2_3=x ",
         lists:flatten(
-          flatlog:format(#{level => info, msg => {report, Map}, meta => #{}},
+          logjam:format(#{level => info, msg => {report, Map}, meta => #{}},
                          #{template => Template,
                            map_depth => 3})
         )
@@ -37,7 +37,7 @@ map_depth(_) ->
     ?assertEqual(
         "a=... 1=... ",
         lists:flatten(
-          flatlog:format(#{level => info, msg => {report, Map}, meta => #{}},
+          logjam:format(#{level => info, msg => {report, Map}, meta => #{}},
                          #{template => Template,
                            map_depth => 1})
         )
@@ -51,21 +51,21 @@ unstructured(_) ->
     ?assertEqual(
        "unstructured_log=abc ",
        lists:flatten(
-         flatlog:format(#{level => info, msg => {string, "abc"}, meta => #{}},
+         logjam:format(#{level => info, msg => {string, "abc"}, meta => #{}},
                         #{template => [msg]})
        )
     ),
     ?assertEqual(
        "unstructured_log=abc ",
        lists:flatten(
-         flatlog:format(#{level => info, msg => {string, [<<"abc">>]}, meta => #{}},
+         logjam:format(#{level => info, msg => {string, [<<"abc">>]}, meta => #{}},
                         #{template => [msg]})
        )
     ),
     ?assertEqual(
        "unstructured_log=\"hello world\" ",
        lists:flatten(
-         flatlog:format(#{level => info, msg => {"hello ~s", ["world"]}, meta => #{}},
+         logjam:format(#{level => info, msg => {"hello ~s", ["world"]}, meta => #{}},
                         #{template => [msg]})
        )
     ),
@@ -77,14 +77,14 @@ colored(_) ->
     ?assertEqual(
        "\e[1;37mwhen= level=info at=:\e[0m hi=there \n",
         lists:flatten(
-          flatlog:format(#{level => info, msg => {report, #{hi => there}}, meta => #{}},
+          logjam:format(#{level => info, msg => {report, #{hi => there}}, meta => #{}},
                          #{colored => true})
         )
     ),
     ?assertEqual(
        "\e[1;44mwhen= level=alert at=:\e[0m unstructured_log=abc \n",
        lists:flatten(
-         flatlog:format(#{level => alert, msg => {string, "abc"}, meta => #{}},
+         logjam:format(#{level => alert, msg => {string, "abc"}, meta => #{}},
                         #{colored => true})
        )
     ),

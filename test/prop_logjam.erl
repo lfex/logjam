@@ -1,4 +1,4 @@
--module(prop_flatlog).
+-module(prop_logjam).
 -compile(export_all).
 -include_lib("proper/include/proper.hrl").
 -include_lib("stdlib/include/assert.hrl").
@@ -18,7 +18,7 @@ prop_map_keys(doc) ->
 prop_map_keys() ->
     ?FORALL({Event, Cfg}, {inner_call(), config()},
         begin
-            Line = flatlog:format(Event, Cfg),
+            Line = logjam:format(Event, Cfg),
             #{msg := {report, Msg}} = Event,
             {Map, Rest} = parse_kv(Line),
             Res = maps:filter(
@@ -42,7 +42,7 @@ prop_nested_map_keys(doc) ->
 prop_nested_map_keys() ->
     ?FORALL({Event, Cfg}, {inner_call_nested(), config()},
         begin
-            Line = flatlog:format(Event, Cfg),
+            Line = logjam:format(Event, Cfg),
             #{msg := {report, Msg}} = Event,
             Map = parse_nested_map(Line),
             Keys = flattened_keys(Msg),
@@ -69,7 +69,7 @@ prop_meta() ->
     ?FORALL({Lvl, Msg, Meta, Cfg}, {level(), meta(), meta(), config()},
         begin
             Event = #{level => Lvl, msg => {report, Msg}, meta => Meta},
-            Line = flatlog:format(Event, Cfg),
+            Line = logjam:format(Event, Cfg),
             {Map, _} = parse_kv(Line),
             ExpectedLevel = format(Lvl),
             ExpectedTime = calendar:system_time_to_rfc3339(
@@ -101,7 +101,7 @@ prop_string_printable(doc) ->
 prop_string_printable() ->
     ?FORALL(S, printable([{escape, false}, {quote, false}]),
         begin
-            Formatted = flatlog:to_string(S, #{term_depth => undefined}),
+            Formatted = logjam:to_string(S, #{term_depth => undefined}),
             re:run(Formatted, "^<<.*>>$", [unicode, dotall]) == nomatch andalso
             re:run(Formatted, "^\".*\"$", [unicode, dotall]) == nomatch andalso
             re:run(Formatted, "[\n\r\n\\\\]", [unicode, dotall]) == nomatch
@@ -112,7 +112,7 @@ prop_string_quotable(doc) ->
 prop_string_quotable() ->
     ?FORALL(S, printable([{escape, false}, {quote, true}]),
         begin
-            Formatted = flatlog:to_string(S, #{term_depth => undefined}),
+            Formatted = logjam:to_string(S, #{term_depth => undefined}),
             re:run(Formatted, "^<<.*>>$", [unicode, dotall]) == nomatch andalso
             re:run(Formatted, "^\".*\"$", [unicode, dotall]) =/= nomatch andalso
             re:run(Formatted, "[\n\r\n\\\\]", [unicode, dotall]) == nomatch
@@ -124,7 +124,7 @@ prop_string_escapable(doc) ->
 prop_string_escapable() ->
     ?FORALL(S, printable([{escape, true}]),
         begin
-            Formatted = flatlog:to_string(S, #{term_depth => undefined}),
+            Formatted = logjam:to_string(S, #{term_depth => undefined}),
             (re:run(Formatted, "^<<.*>>$", [unicode, dotall]) =/= nomatch orelse
              re:run(Formatted, "^\".*\"$", [unicode, dotall]) =/= nomatch) andalso
             re:run(Formatted, "[\n\r\n\\\\]", [unicode, dotall]) =/= nomatch andalso
@@ -137,7 +137,7 @@ prop_string_unescapable(doc) ->
 prop_string_unescapable() ->
     ?FORALL(S, unprintable(),
         begin
-            Formatted = flatlog:to_string(S, #{term_depth => undefined}),
+            Formatted = logjam:to_string(S, #{term_depth => undefined}),
             re:run(Formatted, "^\"?\\[(.+,?)*\\]\"?$") =/= nomatch orelse
             re:run(Formatted, "^<<([0-9:]+,?)+>>$") =/= nomatch
         end).
@@ -152,7 +152,7 @@ prop_empty_keys() ->
             Event = #{level => Lvl,
                       msg => {report, Msg#{K => V}},
                       meta => Meta},
-            Line = flatlog:format(Event, Cfg),
+            Line = logjam:format(Event, Cfg),
             string:find(Line, [" =",format(V)]) =/= nomatch
         end).
 
@@ -166,7 +166,7 @@ prop_empty_vals() ->
             Event = #{level => Lvl,
                       msg => {report, Msg#{K => V}},
                       meta => Meta},
-            Line = flatlog:format(Event, Cfg),
+            Line = logjam:format(Event, Cfg),
             string:find(Line, [format(K),"= "]) =/= nomatch
         end).
 
@@ -178,7 +178,7 @@ setup() ->
       config => #{},
       level => all,
       filter_default => log,
-      formatter => {flatlog, #{}}
+      formatter => {logjam, #{}}
      },
     logger:add_handler_filter(
       default,
