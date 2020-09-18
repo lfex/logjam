@@ -17,6 +17,13 @@
 -type template() :: [metakey() | {metakey(), template(), template()} | string()].
 -type metakey() :: atom() | [atom()].
 
+-define(CYAN, "\e[0;36m").
+-define(CYANB, "\e[1;36m").
+-define(GOLD, "\e[0;33m").
+-define(GOLDB, "\e[1;33m").
+-define(GREEN, "\e[0;32m").
+-define(GREENB, "\e[1;32m").
+-define(COLOR_END, "\e[0m").
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -59,16 +66,16 @@ apply_defaults(Map) ->
         colored => false,
         colored_debug =>     "\e[0;38m",
         colored_info =>      "\e[1;37m",
-        colored_notice =>    "\e[1;36m",
+        colored_notice =>    ?CYANB,
         colored_warning =>   "\e[1;33m",
         colored_error =>     "\e[1;31m",
         colored_critical =>  "\e[1;35m",
         colored_alert =>     "\e[1;44m",
         colored_emergency => "\e[1;41m",
-        template => [colored_start, "when=", time, " level=", level,
+        template => [time, " ", colored_start, level, colored_end, " ",
                      {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
                      {correlation_id, [" correlation_id=", correlation_id], ""},
-                     {pid, [" pid=", pid], ""}, " at=", mfa, ":", line, colored_end, " ", msg, "\n"]
+                     {pid, ["", ?GREEN, pid, ?COLOR_END], ""}, " ", ?GOLD, mfa, ":", line, ?COLOR_END, ?CYANB, " ▸ ", ?COLOR_END, ?GREENB, msg, ?COLOR_END, "\n"]
        },
       Map
     ).
