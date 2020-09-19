@@ -1,6 +1,8 @@
 (defmodule logjam-demo
   (export (run 0)))
 
+(include-lib "kernel/include/logger.hrl")
+
 (defun app-env ()
   '(#(logger (#(handler default
                         logger_std_h
@@ -24,7 +26,7 @@
   ;; (logger:set_application_level 'default 'debug)
   ;; (lfe_io:format "~p~n" `(,(application:which_applications)))
   ;; (lfe_io:format "~p~n" `(,(logger:get_config)))
-  (logger:debug "This is a debug-level message")
+  (logjam:debug "This is a debug-level message")
   (logger:info "This is an info-level message")
   (logger:notice "This is a notice-level message")
   (logger:warning "This is a warning-level message")

@@ -10,19 +10,31 @@
 %% API exports
 -export([format/2]).
 
+%% Wrapper exports
+-export([debug/1]).
+
 -ifdef(TEST).
 -export([format_msg/2, to_string/2]).
 -endif.
 
+-include_lib("kernel/include/logger.hrl").
+
 -type template() :: [metakey() | {metakey(), template(), template()} | string()].
 -type metakey() :: atom() | [atom()].
 
+-define(BLACK, "\e[0;30m").
+-define(BLACK_ON_GOLD, "\e[30;43m").
+-define(BLUE, "\e[0;34m").
+-define(BLUEB, "\e[1;34m").
 -define(CYAN, "\e[0;36m").
 -define(CYANB, "\e[1;36m").
 -define(GOLD, "\e[0;33m").
 -define(GOLDB, "\e[1;33m").
+-define(GOLDB_ON_RED, "\e[1;33;41m").
 -define(GREEN, "\e[0;32m").
 -define(GREENB, "\e[1;32m").
+-define(RED, "\e[0;31m").
+-define(REDB, "\e[1;31m").
 -define(COLOR_END, "\e[0m").
 %%====================================================================
 %% API functions
@@ -43,12 +55,15 @@ format(#{level:=Level, msg:={report, Msg}, meta:=Meta}, UsrConfig) when is_map(M
                                 }),
     format_log(maps:get(template, Config), Config, Msg, NewMeta);
 format(Map = #{msg := {report, KeyVal}}, UsrConfig) when is_list(KeyVal) ->
+    %io:format("KeyVal: ~p", [KeyVal]),
     format(Map#{msg := {report, maps:from_list(KeyVal)}}, UsrConfig);
 format(Map = #{msg := {string, String}}, UsrConfig) ->
+    %io:format("String: ~p", [String]),
     format(Map#{msg := {report,
                         #{unstructured_log =>
                           unicode:characters_to_binary(String)}}}, UsrConfig);
 format(Map = #{msg := {Format, Terms}}, UsrConfig) ->
+    %io:format("Format: ~p", [Format]),
     format(Map#{msg := {report,
                         #{unstructured_log =>
                           unicode:characters_to_binary(io_lib:format(Format, Terms))}}},
@@ -62,20 +77,22 @@ apply_defaults(Map) ->
       #{term_depth => undefined,
         map_depth => -1,
         time_offset => 0,
+        time_unit => second,
         time_designator => $T,
+        strip_tz => false,
         colored => false,
-        colored_debug =>     "\e[0;38m",
-        colored_info =>      "\e[1;37m",
-        colored_notice =>    ?CYANB,
-        colored_warning =>   "\e[1;33m",
-        colored_error =>     "\e[1;31m",
-        colored_critical =>  "\e[1;35m",
-        colored_alert =>     "\e[1;44m",
-        colored_emergency => "\e[1;41m",
+        colored_debug =>     ?BLUEB,
+        colored_info =>      ?CYAN,
+        colored_notice =>    ?GREENB,
+        colored_warning =>   ?GOLDB,
+        colored_error =>     ?REDB,
+        colored_critical =>  ?RED,
+        colored_alert =>     ?BLACK_ON_GOLD,
+        colored_emergency => ?GOLDB_ON_RED,
         template => [time, " ", colored_start, level, colored_end, " ",
                      {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
                      {correlation_id, [" correlation_id=", correlation_id], ""},
-                     {pid, ["", ?GREEN, pid, ?COLOR_END], ""}, " ", ?GOLD, mfa, ":", line, ?COLOR_END, ?CYANB, " ▸ ", ?COLOR_END, ?GREENB, msg, ?COLOR_END, "\n"]
+                     {pid, ["", ?GREEN, pid, ?COLOR_END], ""}, " [", ?GOLD, mfa, ":", line, ?COLOR_END, "] ", ?CYANB, "▸ ", ?COLOR_END, ?GREENB, msg, ?COLOR_END, "\n"]
        },
       Map
     ).
@@ -149,10 +166,22 @@ format_val(_Key, Val, Config) ->
     to_string(Val, Config).
 
 
-format_time(N, #{time_offset := O, time_designator := D}) when is_integer(N) ->
-    calendar:system_time_to_rfc3339(N, [{unit, microsecond},
-                                        {offset, O},
-                                        {time_designator, D}]).
+format_time(N, #{time_offset := O,
+                 time_unit := U,
+                 time_designator := D,
+                 strip_tz := Strip}) when is_integer(N) ->
+    N2 = case U of
+             second -> round(N / 1000000);
+             millisecond -> round(N / 1000);
+             _ -> N
+    end,
+    Time = calendar:system_time_to_rfc3339(N2, [{unit, U},
+                                                {offset, O},
+                                                {time_designator, D}]),
+    case Strip of
+        true -> lists:sublist(Time, 1, length(Time) - 6);
+        _ -> Time
+    end.
 
 format_mfa({M, F, A}, _) when is_atom(M), is_atom(F), is_integer(A) ->
    [atom_to_list(M), $:, atom_to_list(F), $/, integer_to_list(A)];
@@ -227,3 +256,6 @@ do_escape(Str) ->
 truncate_key([]) -> [];
 truncate_key("_") -> "";
 truncate_key([H|T]) -> [H | truncate_key(T)].
+
+debug(Msg) ->
+    ?LOG_DEBUG(Msg).
