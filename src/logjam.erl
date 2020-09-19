@@ -44,7 +44,7 @@
       Config :: logger:formatter_config().
 format(Map = #{msg := {report, #{label := {error_logger, _}, format := Format, args := Terms}}}, UsrConfig) ->
     format(Map#{msg := {report,
-                        #{unstructured_log =>
+                        #{text =>
                               unicode:characters_to_binary(io_lib:format(Format, Terms))}}},
            UsrConfig);
 format(#{level:=Level, msg:={report, Msg}, meta:=Meta}, UsrConfig) when is_map(Msg) ->
@@ -60,12 +60,12 @@ format(Map = #{msg := {report, KeyVal}}, UsrConfig) when is_list(KeyVal) ->
 format(Map = #{msg := {string, String}}, UsrConfig) ->
     %io:format("String: ~p", [String]),
     format(Map#{msg := {report,
-                        #{unstructured_log =>
+                        #{text =>
                           unicode:characters_to_binary(String)}}}, UsrConfig);
 format(Map = #{msg := {Format, Terms}}, UsrConfig) ->
     %io:format("Format: ~p", [Format]),
     format(Map#{msg := {report,
-                        #{unstructured_log =>
+                        #{text =>
                           unicode:characters_to_binary(io_lib:format(Format, Terms))}}},
            UsrConfig).
 
@@ -80,6 +80,8 @@ apply_defaults(Map) ->
         time_unit => second,
         time_designator => $T,
         strip_tz => false,
+        level_capitalize => false,
+        level_length => -1,
         colored => false,
         colored_debug =>     ?BLUEB,
         colored_info =>      ?CYAN,
@@ -92,7 +94,7 @@ apply_defaults(Map) ->
         template => [time, " ", colored_start, level, colored_end, " ",
                      {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
                      {correlation_id, [" correlation_id=", correlation_id], ""},
-                     {pid, ["", ?GREEN, pid, ?COLOR_END], ""}, " [", ?GOLD, mfa, ":", line, ?COLOR_END, "] ", ?CYANB, "▸ ", ?COLOR_END, ?GREENB, msg, ?COLOR_END, "\n"]
+                     {pid, ["", ?BLUEB, pid, ?COLOR_END], ""}, " [", ?GOLD, mfa, ":", line, ?COLOR_END, "] ", ?CYANB, "▸ ", ?COLOR_END, ?GREENB, msg, ?COLOR_END, "\n"]
        },
       Map
     ).
@@ -151,6 +153,8 @@ format_val(time, Time, Config) ->
     format_time(Time, Config);
 format_val(mfa, MFA, Config) ->
     escape(format_mfa(MFA, Config));
+format_val(level, Level, Config) ->
+    format_level(Level, Config);
 format_val(colored_end, _EOC, #{colored := false}) -> "";
 format_val(colored_end, EOC,  #{colored := true}) -> EOC;
 format_val(colored_start, _Level,    #{colored := false}) -> "";
@@ -165,6 +169,17 @@ format_val(colored_start, emergency, #{colored := true, colored_emergency := BOC
 format_val(_Key, Val, Config) ->
     to_string(Val, Config).
 
+format_level(Level, Config) when is_atom(Level) ->
+    format_level(atom_to_list(Level), Config);
+format_level(Level, #{level_capitalize := Is_cap, level_length := Lvl_len}) ->
+    L2 = case Is_cap of
+        true -> string:to_upper(Level);
+        _ -> Level
+    end,
+    case Lvl_len > 0 of
+        true -> lists:sublist(L2, Lvl_len);
+        _ -> L2
+    end.
 
 format_time(N, #{time_offset := O,
                  time_unit := U,
