@@ -5,9 +5,22 @@
   {registered, []},
   {applications,
    [kernel,
-    stdlib
+    stdlib,
+    sasl
    ]},
-  {env,[]},
+  {env,[
+ {kernel, [
+    {logger, [
+        {handler, default, logger_std_h,
+         #{formatter => {logjam, #{
+            map_depth => 3,
+            term_depth => 50
+          }}}
+        }
+    ]},
+    {logger_level, info}
+ ]}
+]},
   {modules, []},
 
   {licenses, ["Apache 2.0"]},
