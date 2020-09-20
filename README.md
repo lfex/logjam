@@ -14,6 +14,10 @@ With logjam, you get something nice and easy to read:
 
 [![][screenshot]][screenshot]
 
+## About
+
+Previous versions of logjam wrapped older versions of the lager logging library. As of Erlang 21.0, Erlang has a new (and excellent) logging library, yet the same output is used (and thus the same problems regarding developer readability persist). The [flatlog][flatlog] library was created to provide structured logging support for the new logger library, and this project was used as the basis of logjam 1.0. Logjam provides additional configuration on top of the code inherited from flatlog, and while it does support much of the same structured logging that flatlog provides, its goals are completely different.
+
 ## Usage
 
 It is recommended that if you are providing a library, you do not add this
@@ -70,3 +74,4 @@ Test
 [github tags]: https://github.com/lfex/logjam/tags
 [github tags badge]: https://img.shields.io/github/tag/lfex/logjam.svg
 [github downloads]: https://img.shields.io/github/downloads/lfex/logjam/total.svg
+[flatlog]: https://github.com/ferd/flatlog
