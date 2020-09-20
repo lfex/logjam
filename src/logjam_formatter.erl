@@ -5,63 +5,19 @@
 %%% The module honors the standard configuration of the kernel's default
 %%% logger formatter regarding: max depth, templates.
 %%% @end
--module(logjam).
+-module(logjam_formatter).
 
 %% API exports
--export([format/2]).
-
-%% Wrapper exports
--export([debug/1]).
+-export([apply_defaults/1, format_log/4, format_to_binary/2, string_to_binary/1]).
 
 -ifdef(TEST).
 -export([format_msg/2, to_string/2]).
 -endif.
 
--include_lib("kernel/include/logger.hrl").
+-include_lib("include/logjam.hrl").
 
 -type template() :: [metakey() | {metakey(), template(), template()} | string()].
 -type metakey() :: atom() | [atom()].
-
--define(BLACK, "\e[0;30m").
--define(BLACKB, "\e[1;30m").
--define(BLACK_ON_GOLD, "\e[30;43m").
--define(BLUE, "\e[0;34m").
--define(BLUEB, "\e[1;34m").
--define(CYAN, "\e[0;36m").
--define(CYANB, "\e[1;36m").
--define(GOLD, "\e[0;33m").
--define(GOLDB, "\e[1;33m").
--define(GOLDB_ON_RED, "\e[1;33;41m").
--define(GREEN, "\e[0;32m").
--define(GREENB, "\e[1;32m").
--define(GREY, "\e[0;37m").
--define(GREYB, "\e[1;37m").
--define(MAGENTA, "\e[0;35m").
--define(MAGENTAB, "\e[1;35m").
--define(RED, "\e[0;31m").
--define(REDB, "\e[1;31m").
--define(COLOR_END, "\e[0m").
-%%====================================================================
-%% API functions
-%%====================================================================
--spec format(LogEvent, Config) -> unicode:chardata() when
-      LogEvent :: logger:log_event(),
-      Config :: logger:formatter_config().
-format(Map = #{msg := {report, #{label := {error_logger, _}, format := Format, args := Terms}}}, UsrConfig) ->
-    format(Map#{msg := {report, #{text => format_to_binary(Format, Terms)}}}, UsrConfig);
-format(#{level:=Level, msg:={report, Msg}, meta:=Meta}, UsrConfig) when is_map(Msg) ->
-    Config = apply_defaults(UsrConfig),
-    NewMeta = maps:merge(Meta, #{level => Level
-                                ,colored_start => Level
-                                ,colored_end => "\e[0m"
-                                }),
-    format_log(maps:get(template, Config), Config, Msg, NewMeta);
-format(Map = #{msg := {report, KeyVal}}, UsrConfig) when is_list(KeyVal) ->
-    format(Map#{msg := {report, maps:from_list(KeyVal)}}, UsrConfig);
-format(Map = #{msg := {string, String}}, UsrConfig) ->
-    format(Map#{msg := {report, #{text => string_to_binary(String)}}}, UsrConfig);
-format(Map = #{msg := {Format, Terms}}, UsrConfig) ->
-    format(Map#{msg := {report, #{text => format_to_binary(Format, Terms)}}}, UsrConfig).
 
 %%====================================================================
 %% Internal functions
@@ -230,7 +186,9 @@ format_mfa({M, F, A}, Config) when is_atom(M), is_atom(F), is_list(A) ->
     %% arguments are passed as a literal list ({mod, fun, [a, b, c]})
     format_mfa({M, F, length(A)}, Config);
 format_mfa(MFAStr, Config) -> % passing in a pre-formatted string value
-    to_string(MFAStr,Config).
+    re:replace(
+        re:replace(to_string(MFAStr,Config), "^{'", ""),
+        "'}$", "").
 
 to_string(X, _) when is_atom(X) ->
     escape(atom_to_list(X));
@@ -306,9 +264,6 @@ do_escape(Str) ->
 truncate_key([]) -> [];
 truncate_key("_") -> "";
 truncate_key([H|T]) -> [H | truncate_key(T)].
-
-debug(Msg) ->
-    ?LOG_DEBUG(Msg).
 
 string_to_binary(String) ->
     %% Remove any ANSI colors
