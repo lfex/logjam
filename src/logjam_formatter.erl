@@ -24,6 +24,7 @@
 %%====================================================================
 apply_defaults(UserConfig) ->
     DefaultColors = #{
+        colored => false,
         colored_date => ?GREEN,
         colored_debug => ?BLUEB,
         colored_info => ?CYAN,
@@ -36,22 +37,22 @@ apply_defaults(UserConfig) ->
         colored_pid => ?BLACKB,
         colored_pid_brackets => ?GREEN,
         colored_mfa => ?GOLD,
-        colored_arror => ?CYANB,
+        colored_arrow => ?CYANB,
         colored_msg => ?GREENB,
         colored_text => ?GREEN},
     Map = maps:merge(DefaultColors, UserConfig),
-    #{colored := Is_colored} = Map,
-    #{colored_mfa := Colored_mfa} = Map,
-    #{colored_arror := Colored_arrow} = Map,
-    #{colored_msg := Colored_msg} = Map,
-    Template = case Is_colored of
+    #{colored := IsColored} = Map,
+    #{colored_mfa := ColoredMfa} = Map,
+    #{colored_arrow := ColoredArrow} = Map,
+    #{colored_msg := ColoredMsg} = Map,
+    Template = case IsColored of
         true -> [time, " ", colored_start, level, colored_end, " ",
                  {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
                  {correlation_id, [" correlation_id=", correlation_id], ""},
                  pid,
-                 " [", Colored_mfa, mfa, ":", line, ?COLOR_END, "] ",
-                 Colored_arrow, "▸ ", ?COLOR_END,
-                 Colored_msg, msg, ?COLOR_END, "\n"];
+                 " [", ColoredMfa, mfa, ":", line, ?COLOR_END, "] ",
+                 ColoredArrow, "▸ ", ?COLOR_END,
+                 ColoredMsg, msg, ?COLOR_END, "\n"];
         _ -> [time, " ", colored_start, level, colored_end, " ",
               {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
               {correlation_id, [" correlation_id=", correlation_id], ""},
@@ -67,7 +68,6 @@ apply_defaults(UserConfig) ->
         strip_tz => false,
         level_capitalize => false,
         level_length => -1,
-        colored => false,
         template => Template
        },
       Map
@@ -187,7 +187,7 @@ format_mfa({M, F, A}, Config) when is_atom(M), is_atom(F), is_list(A) ->
     format_mfa({M, F, length(A)}, Config);
 format_mfa(MFAStr, Config) -> % passing in a pre-formatted string value
     re:replace(
-        re:replace(to_string(MFAStr,Config), "^{'", ""),
+        re:replace(escape(to_string(MFAStr,Config)), "^{'", ""),
         "'}$", "").
 
 to_string(X, _) when is_atom(X) ->
@@ -198,12 +198,12 @@ to_string(X, _) when is_pid(X) ->
     pid_to_list(X);
 to_string(X, _) when is_reference(X) ->
     ref_to_list(X);
-to_string(X, C = #{colored := Is_colored, colored_text := CT}) when is_binary(X) ->
-    BeginColor = case Is_colored of
+to_string(X, C = #{colored := IsColored, colored_text := CT}) when is_binary(X) ->
+    BeginColor = case IsColored of
         true -> CT;
         _ -> ""
     end,
-    EndColor = case Is_colored of
+    EndColor = case IsColored of
         true -> ?COLOR_END;
         _ -> ""
     end,
@@ -231,6 +231,7 @@ format_str(#{term_depth := D}, T) ->
     io_lib:format("~0tP", [T, D]).
 
 escape(Str) ->
+    % io:format("Checking to escape ~p~n", [Str]),
     case needs_escape(Str) of
         false ->
             case needs_quoting(Str) of
@@ -253,6 +254,7 @@ needs_escape(Str) ->
 do_escape([]) ->
     [];
 do_escape(Str) ->
+    % io:format("Escaping string: ~p~n", [Str]),
     case string:next_grapheme(Str) of
         [$\n | Rest] -> [$\\, $\n | do_escape(Rest)];
         ["\r\n" | Rest] -> [$\\, $\r, $\\, $\n | do_escape(Rest)];
