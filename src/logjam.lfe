@@ -52,28 +52,28 @@
   `(apply LOG ,args))
 
 (defmacro debug args
-  `(apply LOG_DEBUG ,args))
+  `(apply log-debug ,args))
 
 (defmacro info args
-  `(LOG_INFO ,@args))
+  `(log-info ,@args))
 
 (defmacro notice args
-  `(LOG_NOTICE ,@args))
+  `(log-notice ,@args))
 
 (defmacro warn args
-  `(LOG_WARNING ,@args))
+  `(log-warn ,@args))
 
 (defmacro warning args
-  `(LOG_WARNING ,@args))
+  `(log-warning ,@args))
 
 (defmacro error args
-  `(LOG_ERROR ,@args))
+  `(log-error ,@args))
 
 (defmacro critical args
-  `(CRITICAL ,@args))
+  `(log-critical ,@args))
 
 (defmacro alert args
-  `(LOG_ALERT ,@args))
+  `(log-alert ,@args))
 
 (defmacro emergency args
-  `(LOG_EMERGENCY ,@args))
+  `(log-emergency ,@args))
