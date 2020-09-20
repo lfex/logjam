@@ -43,10 +43,7 @@
       LogEvent :: logger:log_event(),
       Config :: logger:formatter_config().
 format(Map = #{msg := {report, #{label := {error_logger, _}, format := Format, args := Terms}}}, UsrConfig) ->
-    format(Map#{msg := {report,
-                        #{text =>
-                              unicode:characters_to_binary(io_lib:format(Format, Terms))}}},
-           UsrConfig);
+    format(Map#{msg := {report, #{text => format_to_binary(Format, Terms)}}}, UsrConfig);
 format(#{level:=Level, msg:={report, Msg}, meta:=Meta}, UsrConfig) when is_map(Msg) ->
     Config = apply_defaults(UsrConfig),
     NewMeta = maps:merge(Meta, #{level => Level
@@ -59,15 +56,10 @@ format(Map = #{msg := {report, KeyVal}}, UsrConfig) when is_list(KeyVal) ->
     format(Map#{msg := {report, maps:from_list(KeyVal)}}, UsrConfig);
 format(Map = #{msg := {string, String}}, UsrConfig) ->
     %io:format("String: ~p", [String]),
-    format(Map#{msg := {report,
-                        #{text =>
-                          unicode:characters_to_binary(String)}}}, UsrConfig);
+    format(Map#{msg := {report, #{text => string_to_binary(String)}}}, UsrConfig);
 format(Map = #{msg := {Format, Terms}}, UsrConfig) ->
     %io:format("Format: ~p", [Format]),
-    format(Map#{msg := {report,
-                        #{text =>
-                          unicode:characters_to_binary(io_lib:format(Format, Terms))}}},
-           UsrConfig).
+    format(Map#{msg := {report, #{text => format_to_binary(Format, Terms)}}}, UsrConfig).
 
 %%====================================================================
 %% Internal functions
@@ -274,3 +266,12 @@ truncate_key([H|T]) -> [H | truncate_key(T)].
 
 debug(Msg) ->
     ?LOG_DEBUG(Msg).
+
+string_to_binary(String) ->
+    %% Remove any ANSI colors
+    T1 = re:replace(String, "\e\[[0-9;]*m", ""),
+    unicode:characters_to_binary(T1).
+
+format_to_binary(Format, Terms) ->
+    String = io_lib:format(Format, Terms),
+    string_to_binary(String).
