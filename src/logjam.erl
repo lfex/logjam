@@ -23,6 +23,7 @@
 -type metakey() :: atom() | [atom()].
 
 -define(BLACK, "\e[0;30m").
+-define(BLACKB, "\e[1;30m").
 -define(BLACK_ON_GOLD, "\e[30;43m").
 -define(BLUE, "\e[0;34m").
 -define(BLUEB, "\e[1;34m").
@@ -33,6 +34,10 @@
 -define(GOLDB_ON_RED, "\e[1;33;41m").
 -define(GREEN, "\e[0;32m").
 -define(GREENB, "\e[1;32m").
+-define(GREY, "\e[0;37m").
+-define(GREYB, "\e[1;37m").
+-define(MAGENTA, "\e[0;35m").
+-define(MAGENTAB, "\e[1;35m").
 -define(RED, "\e[0;31m").
 -define(REDB, "\e[1;31m").
 -define(COLOR_END, "\e[0m").
@@ -52,19 +57,51 @@ format(#{level:=Level, msg:={report, Msg}, meta:=Meta}, UsrConfig) when is_map(M
                                 }),
     format_log(maps:get(template, Config), Config, Msg, NewMeta);
 format(Map = #{msg := {report, KeyVal}}, UsrConfig) when is_list(KeyVal) ->
-    %io:format("KeyVal: ~p", [KeyVal]),
     format(Map#{msg := {report, maps:from_list(KeyVal)}}, UsrConfig);
 format(Map = #{msg := {string, String}}, UsrConfig) ->
-    %io:format("String: ~p", [String]),
     format(Map#{msg := {report, #{text => string_to_binary(String)}}}, UsrConfig);
 format(Map = #{msg := {Format, Terms}}, UsrConfig) ->
-    %io:format("Format: ~p", [Format]),
     format(Map#{msg := {report, #{text => format_to_binary(Format, Terms)}}}, UsrConfig).
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
-apply_defaults(Map) ->
+apply_defaults(UserConfig) ->
+    DefaultColors = #{
+        colored_date => ?GREEN,
+        colored_debug => ?BLUEB,
+        colored_info => ?CYAN,
+        colored_notice => ?GREENB,
+        colored_warning => ?GOLDB,
+        colored_error => ?REDB,
+        colored_critical => ?RED,
+        colored_alert => ?BLACK_ON_GOLD,
+        colored_emergency => ?GOLDB_ON_RED,
+        colored_pid => ?BLACKB,
+        colored_pid_brackets => ?GREEN,
+        colored_mfa => ?GOLD,
+        colored_arror => ?CYANB,
+        colored_msg => ?GREENB,
+        colored_text => ?GREEN},
+    Map = maps:merge(DefaultColors, UserConfig),
+    #{colored := Is_colored} = Map,
+    #{colored_mfa := Colored_mfa} = Map,
+    #{colored_arror := Colored_arrow} = Map,
+    #{colored_msg := Colored_msg} = Map,
+    Template = case Is_colored of
+        true -> [time, " ", colored_start, level, colored_end, " ",
+                 {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
+                 {correlation_id, [" correlation_id=", correlation_id], ""},
+                 pid,
+                 " [", Colored_mfa, mfa, ":", line, ?COLOR_END, "] ",
+                 Colored_arrow, "▸ ", ?COLOR_END,
+                 Colored_msg, msg, ?COLOR_END, "\n"];
+        _ -> [time, " ", colored_start, level, colored_end, " ",
+              {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
+              {correlation_id, [" correlation_id=", correlation_id], ""},
+              pid,
+              " [", mfa, ":", line, "] ", "▸ ", msg, "\n"]
+    end,
     maps:merge(
       #{term_depth => undefined,
         map_depth => -1,
@@ -75,22 +112,10 @@ apply_defaults(Map) ->
         level_capitalize => false,
         level_length => -1,
         colored => false,
-        colored_debug =>     ?BLUEB,
-        colored_info =>      ?CYAN,
-        colored_notice =>    ?GREENB,
-        colored_warning =>   ?GOLDB,
-        colored_error =>     ?REDB,
-        colored_critical =>  ?RED,
-        colored_alert =>     ?BLACK_ON_GOLD,
-        colored_emergency => ?GOLDB_ON_RED,
-        template => [time, " ", colored_start, level, colored_end, " ",
-                     {id, [" id=", id], ""}, {parent_id, [" parent_id=", parent_id], ""},
-                     {correlation_id, [" correlation_id=", correlation_id], ""},
-                     {pid, ["", ?BLUEB, pid, ?COLOR_END], ""}, " [", ?GOLD, mfa, ":", line, ?COLOR_END, "] ", ?CYANB, "▸ ", ?COLOR_END, ?GREENB, msg, ?COLOR_END, "\n"]
+        template => Template
        },
       Map
     ).
-
 
 -spec format_log(template(), Config, Msg, Meta) -> unicode:chardata() when
       Config :: logger:formatter_config(),
@@ -140,13 +165,14 @@ format_msg(Parents, Data, Config = #{map_depth := Depth}) when is_map(Data) ->
       Data
     ).
 
-
 format_val(time, Time, Config) ->
     format_time(Time, Config);
 format_val(mfa, MFA, Config) ->
     escape(format_mfa(MFA, Config));
 format_val(level, Level, Config) ->
     format_level(Level, Config);
+format_val(pid, Pid, Config) ->
+    format_pid(Pid, Config);
 format_val(colored_end, _EOC, #{colored := false}) -> "";
 format_val(colored_end, EOC,  #{colored := true}) -> EOC;
 format_val(colored_start, _Level,    #{colored := false}) -> "";
@@ -160,18 +186,6 @@ format_val(colored_start, alert,     #{colored := true, colored_alert     := BOC
 format_val(colored_start, emergency, #{colored := true, colored_emergency := BOC}) -> BOC;
 format_val(_Key, Val, Config) ->
     to_string(Val, Config).
-
-format_level(Level, Config) when is_atom(Level) ->
-    format_level(atom_to_list(Level), Config);
-format_level(Level, #{level_capitalize := Is_cap, level_length := Lvl_len}) ->
-    L2 = case Is_cap of
-        true -> string:to_upper(Level);
-        _ -> Level
-    end,
-    case Lvl_len > 0 of
-        true -> lists:sublist(L2, Lvl_len);
-        _ -> L2
-    end.
 
 format_time(N, #{time_offset := O,
                  time_unit := U,
@@ -190,6 +204,26 @@ format_time(N, #{time_offset := O,
         _ -> Time
     end.
 
+format_level(Level, Config) when is_atom(Level) ->
+    format_level(atom_to_list(Level), Config);
+format_level(Level, #{level_capitalize := Is_cap, level_length := Lvl_len}) ->
+    L2 = case Is_cap of
+        true -> string:to_upper(Level);
+        _ -> Level
+    end,
+    case Lvl_len > 0 of
+        true -> lists:sublist(L2, Lvl_len);
+        _ -> L2
+    end.
+
+format_pid(Pid, Config) when is_pid(Pid) ->
+    format_pid(pid_to_list(Pid), Config);
+format_pid(Pid, #{colored := false}) when is_list(Pid) -> Pid;
+format_pid(Pid, #{colored := true, colored_pid := CP, colored_pid_brackets := CPB}) when is_list(Pid) ->
+    CPB ++ "<" ?COLOR_END ++
+    CP ++ re:replace(Pid, "[<>]", "", [global, {return, list}]) ++ ?COLOR_END ++
+    CPB ++ ">" ++ ?COLOR_END.
+
 format_mfa({M, F, A}, _) when is_atom(M), is_atom(F), is_integer(A) ->
    [atom_to_list(M), $:, atom_to_list(F), $/, integer_to_list(A)];
 format_mfa({M, F, A}, Config) when is_atom(M), is_atom(F), is_list(A) ->
@@ -206,12 +240,12 @@ to_string(X, _) when is_pid(X) ->
     pid_to_list(X);
 to_string(X, _) when is_reference(X) ->
     ref_to_list(X);
-to_string(X, C = #{colored := IsColored}) when is_binary(X) ->
-    BeginColor = case IsColored of
-        true -> ?GREEN;
+to_string(X, C = #{colored := Is_colored, colored_text := CT}) when is_binary(X) ->
+    BeginColor = case Is_colored of
+        true -> CT;
         _ -> ""
     end,
-    EndColor = case IsColored of
+    EndColor = case Is_colored of
         true -> ?COLOR_END;
         _ -> ""
     end,
