@@ -9,7 +9,7 @@
   (export-macro
    log debug info notice warn warning error critical alert emergency))
 
-(include-lib "include/logjam.hrl")
+(include-lib "logjam/include/logjam.hrl")
 
 ;;;==========================================================================
 ;;; API functions
@@ -34,7 +34,7 @@
   (((= `#m(msg #(string ,string)) data) user-config)
     (format (map-update
               data
-              'msg `#(report #m(text (logjam_formatter:string_to_binary string))))
+              'msg `#(report #m(text ,(logjam_formatter:string_to_binary string))))
             user-config))
   (((= `#m(msg #(,format ,terms)) data) user-config)
     (format (map-update

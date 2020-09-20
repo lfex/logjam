@@ -34,6 +34,10 @@
 -define(LOG_ALERT(A,B),?DO_LOG(alert,[A,B])).
 -define(LOG_ALERT(A,B,C),?DO_LOG(alert,[A,B,C])).
 
+-define(LOG_CRIT(A),?DO_LOG(critical,[A])).
+-define(LOG_CRIT(A,B),?DO_LOG(critical,[A,B])).
+-define(LOG_CRIT(A,B,C),?DO_LOG(critical,[A,B,C])).
+
 -define(LOG_CRITICAL(A),?DO_LOG(critical,[A])).
 -define(LOG_CRITICAL(A,B),?DO_LOG(critical,[A,B])).
 -define(LOG_CRITICAL(A,B,C),?DO_LOG(critical,[A,B,C])).
@@ -41,6 +45,10 @@
 -define(LOG_ERROR(A),?DO_LOG(error,[A])).
 -define(LOG_ERROR(A,B),?DO_LOG(error,[A,B])).
 -define(LOG_ERROR(A,B,C),?DO_LOG(error,[A,B,C])).
+
+-define(LOG_WARN(A),?DO_LOG(warning,[A])).
+-define(LOG_WARN(A,B),?DO_LOG(warning,[A,B])).
+-define(LOG_WARN(A,B,C),?DO_LOG(warning,[A,B,C])).
 
 -define(LOG_WARNING(A),?DO_LOG(warning,[A])).
 -define(LOG_WARNING(A,B),?DO_LOG(warning,[A,B])).
