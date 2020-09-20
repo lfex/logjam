@@ -11,7 +11,7 @@ term_depth() ->
 term_depth(_) ->
     ?assertEqual(
        "\"[\\\"01234567890123456789\\\",abc,[d,e|...]]\"",
-        lists:flatten(logjam:to_string(
+        lists:flatten(logjam_formatter:to_string(
           ["01234567890123456789",abc,[d,e,[f,g,h]]]
           , #{term_depth => 6}
         ))
@@ -49,21 +49,21 @@ unstructured() ->
     [{docs, "logs that aren't structured get passed through with a re-frame"}].
 unstructured(_) ->
     ?assertEqual(
-       "unstructured_log=abc ",
+       "text=abc ",
        lists:flatten(
          logjam:format(#{level => info, msg => {string, "abc"}, meta => #{}},
                         #{template => [msg]})
        )
     ),
     ?assertEqual(
-       "unstructured_log=abc ",
+       "text=abc ",
        lists:flatten(
          logjam:format(#{level => info, msg => {string, [<<"abc">>]}, meta => #{}},
                         #{template => [msg]})
        )
     ),
     ?assertEqual(
-       "unstructured_log=\"hello world\" ",
+       "text=\"hello world\" ",
        lists:flatten(
          logjam:format(#{level => info, msg => {"hello ~s", ["world"]}, meta => #{}},
                         #{template => [msg]})
@@ -75,14 +75,14 @@ colored() ->
     [{docs, "colored output logs"}].
 colored(_) ->
     ?assertEqual(
-       "\e[1;37mwhen= level=info at=:\e[0m hi=there \n",
+       " \e[0;36minfo\e[0m  [\e[0;33m:\e[0m] \e[1;36m▸ \e[0m\e[1;32mhi=there \e[0m\n",
         lists:flatten(
           logjam:format(#{level => info, msg => {report, #{hi => there}}, meta => #{}},
                          #{colored => true})
         )
     ),
     ?assertEqual(
-       "\e[1;44mwhen= level=alert at=:\e[0m unstructured_log=abc \n",
+       " \e[30;43malert\e[0m  [\e[0;33m:\e[0m] \e[1;36m▸ \e[0m\e[1;32mtext=\e[0;32mabc\e[0m \e[0m\n",
        lists:flatten(
          logjam:format(#{level => alert, msg => {string, "abc"}, meta => #{}},
                         #{colored => true})
