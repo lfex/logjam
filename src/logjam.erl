@@ -206,8 +206,16 @@ to_string(X, _) when is_pid(X) ->
     pid_to_list(X);
 to_string(X, _) when is_reference(X) ->
     ref_to_list(X);
-to_string(X, C) when is_binary(X) ->
-    case unicode:characters_to_list(X) of
+to_string(X, C = #{colored := IsColored}) when is_binary(X) ->
+    BeginColor = case IsColored of
+        true -> ?GREEN;
+        _ -> ""
+    end,
+    EndColor = case IsColored of
+        true -> ?COLOR_END;
+        _ -> ""
+    end,
+    String = case unicode:characters_to_list(X) of
         {_, _, _} -> % error or incomplete
             escape(format_str(C, X));
         List ->
@@ -215,7 +223,8 @@ to_string(X, C) when is_binary(X) ->
                 true -> escape(List);
                 _ -> escape(format_str(C, X))
             end
-    end;
+    end,
+    BeginColor ++ String ++ EndColor;
 to_string(X, C) when is_list(X) ->
     case io_lib:printable_list(X) of
         true -> escape(X);
