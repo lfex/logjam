@@ -33,6 +33,6 @@ jobs:
     - name: Run Tests
       run: rebar3 ct -c
     - name: Test Coverage
-      run: rebar3 coverage
+      run: rebar3 do proper -c, cover -v --min_coverage=75
     - name: Generate Docs
       run: rebar3 edoc

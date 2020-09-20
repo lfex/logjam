@@ -4,7 +4,9 @@
                  meta =>
                      #{line => 1,
                        mfa => {'','\n',0},
-                       pid => "<0.7.0>",test_meta => true,time => 0},
+                       pid => "<0.7.0>",
+                       test_meta => true,
+                       time => 0},
                  msg => {report,#{}}},
                #{}}]}.
 
@@ -14,6 +16,8 @@
                  meta =>
                      #{line => 1,
                        mfa => {'','',0},
-                       pid => "<0.32.0>",test_meta => true,time => 0},
+                       pid => "<0.32.0>",
+                       test_meta => true,
+                       time => 0},
                  msg => {report,#{"0" => ' \\'}}},
                 #{}}]}.

@@ -268,7 +268,8 @@ truncate_key("_") -> "";
 truncate_key([H|T]) -> [H | truncate_key(T)].
 
 string_to_binary(String) ->
-    %% Remove any ANSI colors
+    %% Remove any ANSI colors; this is intended for inputs that have ANSI
+    %% colors added to them, e.g., by another logging library/framework.
     T1 = re:replace(String, "\e\[[0-9;]*m", ""),
     unicode:characters_to_binary(T1).
 
