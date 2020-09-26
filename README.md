@@ -30,21 +30,23 @@ Once the project is added, replace the formatter of the default handler (or add 
 
 ```erlang
 [
- {kernel, [
-    {logger, [
-        {handler, default, logger_std_h,
-         #{formatter => {logjam, #{
-            colored => true,
-            time_designator => $\s,
-            time_offset => "",
-            time_unit => second,
-            strip_tz => true,
-            level_capitalize => true
-          }}}
-        }
-    ]},
-    {logger_level, info}
- ]}
+  {kernel, [
+      {logger, [
+          {handler, default, logger_std_h,
+          #{level => info,
+            formatter => {logjam,
+              #{colored => true,
+                time_designator => $\s,
+                time_offset => "",
+                time_unit => second,
+                strip_tz => true,
+                level_capitalize => true
+              }
+            }
+           }
+          }
+      ]}
+  ]}
 ].
 ```
 
