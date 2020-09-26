@@ -77,7 +77,7 @@ or
 
 This will let you call the logging macros such as `(LOG_DEBUG "my message")` or `?LOG_DEBUG("my message").`
 
-If you'd like to use the `logjam` macros, use these instead`:
+If you'd like to use the `logjam` macros, use these instead:
 
 ```lisp
 (include-lib "logjam/include/logjam.hrl")
