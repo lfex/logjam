@@ -22,9 +22,10 @@ For versions of Erlang older than 21.0 (and for LFE 1.2), you may be able to use
 
 ## Usage
 
-It is recommended that if you are providing a library, you do not add this
-project as a dependency. A code formatter of this kind should be added to a
-project in its release repository as a top-level final presentational concern.
+There are two ways to use logjam:
+
+1. Simply as a formatter, in which case it should be to the release apps and not inlcuded as a dependency. This assumes you will be using the logger macros included with Erlang/OTP.
+1. As both a formatter as well as taking advantage of the logjam logging macros that have Lisp-style names (e.g., `log-debug`). In this case, you will want to include logjam as a dependency.
 
 ### Configuration
 
