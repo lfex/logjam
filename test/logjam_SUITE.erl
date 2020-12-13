@@ -4,7 +4,7 @@
 -include_lib("stdlib/include/assert.hrl").
 
 all() ->
-    [term_depth, map_depth, unstructured, colored].
+    [term_depth, map_depth, unstructured, colored, demo].
 
 term_depth() ->
     [{docs, "Once a term is too deep, it gets continued with `...'"}].
@@ -89,3 +89,9 @@ colored(_) ->
        )
     ),
     ok.
+
+demo() ->
+    [{docs, "just going for text coverage ..."}].
+demo(_) ->
+    logjam_demo:run(),
+    'logjam-demo':run().
