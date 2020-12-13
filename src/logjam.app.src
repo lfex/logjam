@@ -1,28 +1,27 @@
-{application, logjam,
- [{description, "A custom formatter for the logger application that turns "
-                "maps into single line text logs"},
-  {vsn, "1.0.0"},
-  {registered, []},
-  {applications,
-   [kernel,
-    stdlib,
-    sasl
-   ]},
-  {env,[
- {kernel, [
-    {logger, [
-        {handler, default, logger_std_h,
-         #{formatter => {logjam, #{
-            map_depth => 3,
-            term_depth => 50
-          }}}
-        }
+{application, logjam, [
+    {description, "A custom formatter for the Erlang logger application that "
+                  "produces human-readable output"},
+    {vsn, "1.0.0-rc2"},
+    {registered, []},
+    {applications, [
+        kernel,
+        stdlib,
+        sasl
     ]},
-    {logger_level, info}
- ]}
-]},
-  {modules, []},
-
-  {licenses, ["Apache 2.0"]},
-  {links, [{"Github", "https://github.com/lfex/logjam/"}]}
+    {env,[
+        {kernel, [
+            {logger, [
+                {handler, default, logger_std_h,
+                 #{level => info,
+                   formatter => {logjam, #{map_depth => 3,
+                                           term_depth => 50}}
+                 }
+                }
+            ]},
+            {logger_level, info}
+        ]}
+    ]},
+    {modules, []},
+    {licenses, ["Apache 2.0"]},
+    {links, [{"Github", "https://github.com/lfex/logjam/"}]}
  ]}.
