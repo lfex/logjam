@@ -89,3 +89,8 @@
                 ok
         end).
 -endif.
+
+%% This function is for display purpses when used in the LFE REPL
+%% and needs to be the last function in the include file.
+-define('|-- loaded include: logjam --|'(),
+  ok).
