@@ -1,7 +1,7 @@
 (defmodule logjam-demo
-  (export (run 0)))
+  (export
+   (run 0)))
 
-(include-lib "kernel/include/logger.hrl")
 (include-lib "logjam/include/logjam.hrl")
 
 (defun run ()

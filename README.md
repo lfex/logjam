@@ -105,6 +105,12 @@ Here is some example LFE usage:
 (log-info #m(some "structured" logging "examples" might "be useful too")))
 ```
 
+## Demo
+
+``` bash
+$ rebar3 demo
+```
+
 ## Test
 
 ```bash
