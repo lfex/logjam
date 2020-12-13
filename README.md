@@ -33,23 +33,21 @@ Once the project is added, replace the formatter of the default handler (or add 
 
 ```erlang
 [
-  {kernel, [
-      {logger, [
-          {handler, default, logger_std_h,
-          #{level => info,
-            formatter => {logjam,
-              #{colored => true,
-                time_designator => $\s,
-                time_offset => "",
-                time_unit => second,
-                strip_tz => true,
-                level_capitalize => true
-              }
-            }
-           }
+ {kernel, [
+    {logger, [
+        {handler, default, logger_std_h,
+         #{level => all,
+           formatter => {logjam, #{colored => true,
+                                   time_designator => $\s,
+                                   time_offset => "",
+                                   time_unit => second,
+                                   strip_tz => true,
+                                   level_capitalize => true}}
           }
-      ]}
-  ]}
+        }
+    ]},
+    {logger_level, debug}
+ ]}
 ].
 ```
 
@@ -58,6 +56,20 @@ This configuration was used to produce the screenshot above.
 Note that if you are building a release, you will need to manually add
 the `logjam` dependency to your `relx` configuration, since it is
 technically not a direct dependency of any application in your system.
+
+If you're not using OTP releases for your applications, you can set the logging configuration using the logger API (as is done in `scripts/demo.lfe`)
+
+``` lisp
+(logger:set_primary_config #m(level debug))
+(logger:set_handler_config 'default
+                           #m(level debug
+                              formatter #(logjam #m(colored true
+                                                    time_designator \#s
+                                                    time_offset ""
+                                                    time_unit second
+                                                    strip_tz true
+                                                    level_capitalize true))))
+```
 
 ### Logging Calls
 
