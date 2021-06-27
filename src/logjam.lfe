@@ -5,7 +5,14 @@
 ;;;; logger formatter regarding: max depth, templates.
 (defmodule logjam
   (export
-   (format 2))
+   (format 2)
+   (read-config 1)
+   (set-handler 1) (set-handler 2)
+   (set-handler-from-config 1) (set-handler-from-config 2)
+   ;; Aliases for Erlang users:
+   (read_config 1)
+   (set_handler 1) (set_handler 2)
+   (set_handler_from_config 1) (set_handler_from_config 2))
   (export-macro
    log debug info notice warn warning error critical alert emergency))
 
@@ -41,6 +48,48 @@
               data
               'msg `#(report #m(text ,(logjam_formatter:format_to_binary format terms))))
             user-config)))
+
+(defun read-config (config-file)
+  "Read a standard release-style system config file.
+
+  Essentially wraps file:consult/1."
+  (let ((`#(ok (,cfg)) (file:consult config-file)))
+    cfg))
+
+(defun set-handler-from-config (config-file)
+   (set-handler (read-config config-file)))
+
+(defun set-handler-from-config (config-file name)
+   (set-handler name (read-config config-file)))
+
+(defun set-handler (config-data)
+  (set-handler config-data 'default))
+
+(defun set-handler (config-data name)
+  (logger:set_handler_config
+   name
+   (clj:->> config-data
+            (proplists:get_value 'kernel)
+            (proplists:get_value 'logger)
+            (car)
+            (element 4))))
+
+;; Aliases for Erlang users
+
+(defun read_config (config-file)
+  (read-config config-file))
+
+(defun set_handler_from_config (config-file)
+  (set-handler-from-config config-file))
+
+(defun set_handler_from_config (config-file name)
+  (set-handler-from-config config-file name))
+
+(defun set_handler (config-file)
+  (set-handler config-file))
+
+(defun set_handler (config-file name)
+  (set-handler config-file name))
 
 ;;;==========================================================================
 ;;; API macros

@@ -122,10 +122,11 @@ Here is some example LFE usage:
 (log-info #m(some "structured" logging "examples" might "be useful too")))
 ```
 
-## Demo
+## Demos
 
 ``` bash
-$ rebar3 as examples demo
+$ rebar3 as examples lfe-demo
+$ rebar3 as examples erlang-demo
 ```
 
 ## Test
