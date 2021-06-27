@@ -125,7 +125,7 @@ Here is some example LFE usage:
 ## Demo
 
 ``` bash
-$ rebar3 demo
+$ rebar3 as examples demo
 ```
 
 ## Test
