@@ -22,6 +22,8 @@
         ]}
     ]},
     {modules, []},
+
     {licenses, ["Apache 2.0"]},
-    {links, [{"Github", "https://github.com/lfex/logjam/"}]}
+    {links, [{"Github", "https://github.com/lfex/logjam/"}]},
+    {exclude_files, ["priv/images/*"]}
  ]}.
