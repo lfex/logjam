@@ -10,7 +10,7 @@ on:
 jobs:
 
   build:
-    name: Build on OTP ${{ matrix.otp_version }} / ${{ matrix.os }}
+    name: Erlang ${{ matrix.otp_version }} build
     runs-on: ubuntu-latest
 
     strategy:
@@ -18,24 +18,25 @@ jobs:
         otp_version: [21, 22, 23, 24]
         os: [ubuntu-latest]
 
-    container:
-      image: erlang:${{ matrix.otp_version }}
-
     steps:
     - uses: actions/checkout@v2
-    - name: Download rebar3
-      run: wget https://github.com/erlang/rebar3/releases/download/3.15.2/rebar3 && chmod 755 ./rebar3
+    - uses: erlef/setup-beam@v1
+      with:
+        otp-version: ${{ matrix.otp_version }}
+        rebar3-version: '3.15'
+    - name: Check rebar3 Version
+      run: rebar3 --version
     - name: Compile
-      run: ./rebar3 compile
+      run: rebar3 compile
     - name: Xref Checks
-      run: ./rebar3 xref
+      run: rebar3 xref
     - name: Dialyzer
-      run: ./rebar3 dialyzer
+      run: rebar3 dialyzer
     - name: Proper Tests
-      run: ./rebar3 proper --regressions
+      run: rebar3 proper --regressions
     - name: Run Tests
-      run: ./rebar3 ct -c
+      run: rebar3 ct -c
     - name: Test Coverage
-      run: ./rebar3 do proper -c, cover -v --min_coverage=60
+      run: rebar3 do proper -c, cover -v --min_coverage=60
     - name: Generate Docs
-      run: ./rebar3 edoc
+      run: rebar3 edoc
