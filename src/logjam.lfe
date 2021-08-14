@@ -7,6 +7,7 @@
   (export
    (format 2)
    (read-config 1)
+   (read-log-level 1)
    (set-handler 1) (set-handler 2)
    (set-handler-from-config 1) (set-handler-from-config 2)
    ;; Aliases for Erlang users:
@@ -55,6 +56,11 @@
   Essentially wraps file:consult/1."
   (let ((`#(ok (,cfg)) (file:consult config-file)))
     cfg))
+
+(defun read-log-level (config-file)
+  (clj:->> (read-config config-file)
+           (proplists:get_value 'kernel)
+           (proplists:get_value 'logger_level)))
 
 (defun set-handler-from-config (config-file)
    (set-handler (read-config config-file)))
