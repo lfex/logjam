@@ -132,7 +132,7 @@ $ rebar3 as examples erlang-demo
 ## Test
 
 ```bash
-$ rebar3 check
+$ rebar3 as test check
 ```
 
 <!-- Named page links below: /-->
