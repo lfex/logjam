@@ -1,7 +1,7 @@
 {application, logjam, [
     {description, "A custom formatter for the Erlang logger application that "
                   "produces human-readable output"},
-    {vsn, "1.0.0-rc3"},
+    {vsn, "1.0.1"},
     {registered, []},
     {applications, [
         kernel,
