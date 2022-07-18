@@ -1,7 +1,7 @@
 {application, logjam,
  [{description, "A custom formatter for the logger application that turns "
                 "maps into single line text logs"},
-  {vsn, "1.0.3"},
+  {vsn, "1.0.4"},
   {registered, []},
   {applications,
    [kernel,
