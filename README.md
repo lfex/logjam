@@ -8,7 +8,7 @@
 
 ## Why?
 
-The default formatter for Erlang is very difficult to read at a glance making troubleshooting and debugging of applications via log output during development phases rather cumbersome or even difficult. 
+The default formatter for Erlang is very difficult to read at a glance making troubleshooting and debugging of applications via log output during development phases rather cumbersome or even difficult.
 
 With logjam, you get something nice and easy to read:
 
@@ -24,7 +24,7 @@ For versions of Erlang older than 21.0 (and for LFE 1.2), you may be able to use
 
 There are two ways to use logjam:
 
-1. Simply as a formatter, in which case it should be to the release apps and not inlcuded as a dependency. This assumes you will be using the logger macros included with Erlang/OTP.
+1. Simply as a formatter, in which case it should be to the release apps and not included as a dependency. This assumes you will be using the logger macros included with Erlang/OTP.
 1. As both a formatter as well as taking advantage of the logjam logging macros that have Lisp-style names (e.g., `log-debug`). In this case, you will want to include logjam as a dependency.
 
 ### Configuration
@@ -114,7 +114,7 @@ $ rebar3 demo
 ## Test
 
 ```bash
-$ rebar3 check
+rebar3 check
 ```
 
 <!-- Named page links below: /-->
