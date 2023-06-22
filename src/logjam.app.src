@@ -1,6 +1,6 @@
 {application, logjam,
- [{description, "A custom formatter for the logger application that turns "
-                "maps into single line text logs"},
+ [{description, "A custom formatter for the logger application "
+                "with LFE logging macros and human-readable output"},
   {vsn, "1.1.0"},
   {registered, []},
   {applications,

@@ -7,7 +7,7 @@
 
 [![Project Logo][logo]][logo-large]
 
-*A custom formatter for the Erlang logger application that produces human-readable output*
+*A custom formatter for the logger application with LFE logging macros and human-readable output*
 
 ## Why?
 
