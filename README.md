@@ -128,7 +128,7 @@ rebar3 check
 [gh-actions-badge]: https://github.com/lfex/logjam/workflows/ci%2Fcd/badge.svg
 [gh-actions]: https://github.com/lfex/logjam/actions
 [lfe]: https://github.com/rvirding/lfe
-[lfe badge]: https://img.shields.io/badge/lfe-2.0-blue.svg
+[lfe badge]: https://img.shields.io/badge/lfe-2.1+-blue.svg
 [erlang badge]: https://img.shields.io/badge/erlang-21%20to%2025-blue.svg
 [versions]: https://github.com/lfex/logjam/blob/master/.travis.yml
 [github tags]: https://github.com/lfex/logjam/tags
