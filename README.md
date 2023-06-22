@@ -1,6 +1,9 @@
 # logjam
 
-[![Build Status][gh-actions-badge]][gh-actions] [![LFE Versions][lfe badge]][lfe] [![Erlang Versions][erlang badge]][versions] [![Tags][github tags badge]][github tags]
+[![Build Status][gh-actions-badge]][gh-actions]
+[![LFE Versions][lfe badge]][lfe]
+[![Erlang Versions][erlang badge]][versions]
+[![Tags][github tags badge]][github tags]
 
 [![Project Logo][logo]][logo-large]
 
@@ -108,7 +111,7 @@ Here is some example LFE usage:
 ## Demo
 
 ``` bash
-$ rebar3 demo
+rebar3 demo
 ```
 
 ## Test
@@ -117,21 +120,17 @@ $ rebar3 demo
 rebar3 check
 ```
 
-<!-- Named page links below: /-->
+[//]: ---Named-Links---
 
 [logo]: priv/images/logjam-crop-small.png
 [logo-large]: priv/images/logjam.jpg
 [screenshot]: priv/images/screenshot.png
-[org]: https://github.com/lfex
-[github]: https://github.com/lfex/logjam
-[gitlab]: https://gitlab.com/lfex/logjam
 [gh-actions-badge]: https://github.com/lfex/logjam/workflows/ci%2Fcd/badge.svg
 [gh-actions]: https://github.com/lfex/logjam/actions
 [lfe]: https://github.com/rvirding/lfe
 [lfe badge]: https://img.shields.io/badge/lfe-2.0-blue.svg
-[erlang badge]: https://img.shields.io/badge/erlang-21%20to%2023-blue.svg
+[erlang badge]: https://img.shields.io/badge/erlang-21%20to%2025-blue.svg
 [versions]: https://github.com/lfex/logjam/blob/master/.travis.yml
 [github tags]: https://github.com/lfex/logjam/tags
 [github tags badge]: https://img.shields.io/github/tag/lfex/logjam.svg
-[github downloads]: https://img.shields.io/github/downloads/lfex/logjam/total.svg
 [flatlog]: https://github.com/ferd/flatlog
