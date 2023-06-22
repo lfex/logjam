@@ -23,6 +23,12 @@
 ]},
   {modules, []},
 
+  %% Package metadata:
+  {pkg_name, logjam},
   {licenses, ["Apache 2.0"]},
-  {links, [{"Github", "https://github.com/lfex/logjam/"}]}
+  {links, [
+    {"Github", "https://github.com/lfex/logjam/"},
+    {"Hex", "https://hex.pm/packages/logjam"}
+  ]},
+  {exclude_files, ["priv/images/*", "priv/scripts/*"]}
  ]}.
