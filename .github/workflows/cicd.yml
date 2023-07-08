@@ -36,6 +36,8 @@ jobs:
       run: rebar3 proper --regressions
     - name: Run Tests
       run: rebar3 ct -c
+    - name: Run Demo
+      run: rebar3 demo
 
   older-builds:
     name: Old Erlang ${{ matrix.otp_version }} build
@@ -61,4 +63,5 @@ jobs:
       run: rebar3 proper --regressions
     - name: Run Tests
       run: rebar3 ct -c
-
+    - name: Run Demo
+      run: rebar3 demo
