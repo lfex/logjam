@@ -62,6 +62,20 @@ Note that if you are building a release, you will need to manually add
 the `logjam` dependency to your `relx` configuration, since it is
 technically not a direct dependency of any application in your system.
 
+If you're not using an OTP release and just want to set up logging based upon a config file with the above entry in it, you can do the following:
+
+```lisp
+(logjam:set-config #(path "./path/to/thing.config"))
+```
+
+This is what is done in `./scripts/demo.lfe`.
+
+If you have the config data already in above format (proplist with a `kernel` entry), you can just do this:
+
+```lisp
+(logjam:set-config config-data)
+```
+
 ### Logging Calls
 
 If you call the logger functions directly, your log output will not have reference to the module, function, arity, or line number where the logging call was made. For this info, you need to use the `logger` or `logjam` macros.
