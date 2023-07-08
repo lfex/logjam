@@ -5,10 +5,12 @@
 ;;;; logger formatter regarding: max depth, templates.
 (defmodule logjam
   (export
-   (format 2))
+   (format 2)
+   (set-config 1))
   (export-macro
    log debug info notice warn warning error critical alert emergency))
 
+(include-lib "lfe/include/clj.lfe")
 (include-lib "logjam/include/logjam.hrl")
 
 ;;;==========================================================================
@@ -16,8 +18,8 @@
 ;;;==========================================================================
 (defun format
   (((= `#m(msg #(report #m(label #(error_logger ,_) format ,format args ,terms))) data) user-config)
-    (format (map-update 
-              data 
+    (format (map-update
+              data
               'msg `#(report #m(text ,(logjam_formatter:format_to_binary format terms))))
             user-config))
   ((`#m(level ,level msg #(report ,msg) meta ,meta) user-config) (when (is_map msg))
@@ -41,6 +43,31 @@
               data
               'msg `#(report #m(text ,(logjam_formatter:format_to_binary format terms))))
             user-config)))
+
+(defun set-config
+ ((`#(path ,filename))
+  (let ((`#(ok (,cfg)) (file:consult filename)))
+    (set-config cfg)))
+ ((cfg-data)
+  (let ((handler-cfg (handler-cfg cfg-data)))
+    (logger:set_primary_config (maps:with '(level) handler-cfg))
+    (logger:set_handler_config 'default handler-cfg))))
+
+;;;==========================================================================
+;;; Private functions
+;;;==========================================================================
+
+(defun kernel-cfg (cfg)
+  (proplists:get_value 'kernel cfg))
+
+(defun logger-cfg (cfg)
+  (proplists:get_value 'logger (kernel-cfg cfg)))
+
+(defun handler-cfg (cfg)
+  (->> cfg
+       (logger-cfg)
+       (car)
+       (element 4)))
 
 ;;;==========================================================================
 ;;; API macros
