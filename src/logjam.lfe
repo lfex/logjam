@@ -6,7 +6,10 @@
 (defmodule logjam
   (export
    (format 2)
-   (set-config 1))
+   (get-config 1)
+   (set-config 1)
+   (set-dev-config 0)
+   (set-prod-config 0))
   (export-macro
    log debug info notice warn warning error critical alert emergency))
 
@@ -52,6 +55,16 @@
   (let ((handler-cfg (handler-cfg cfg-data)))
     (logger:set_primary_config (maps:with '(level) handler-cfg))
     (logger:set_handler_config 'default handler-cfg))))
+
+(defun set-dev-config ()
+  (set-config `#(path ,(get-config 'dev))))
+
+(defun set-prod-config ()
+  (set-config `#(path ,(get-config 'prod))))
+
+(defun get-config (type)
+  (lists:flatten
+   (io_lib:format "~s/config/~p.config" `(,(code:priv_dir 'logjam) ,type))))
 
 ;;;==========================================================================
 ;;; Private functions
