@@ -9,6 +9,8 @@
    (get-config 1)
    (set-config 1)
    (set-dev-config 0)
+   (set-info-config 0)
+   (set-notice-config 0)
    (set-prod-config 0))
   (export-macro
    log debug info notice warn warning error critical alert emergency))
@@ -58,6 +60,12 @@
 
 (defun set-dev-config ()
   (set-config `#(path ,(get-config 'dev))))
+
+(defun set-info-config ()
+  (set-config `#(path ,(get-config 'info))))
+
+(defun set-notice-config ()
+  (set-config `#(path ,(get-config 'notice))))
 
 (defun set-prod-config ()
   (set-config `#(path ,(get-config 'prod))))
