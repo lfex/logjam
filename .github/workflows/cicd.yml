@@ -18,9 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        # One of the tests breaks on 26
-        otp-version: ['24', '25', '26']
-        #otp-version: ['24', '25']
+        otp-version: ['26', '25', '24']
         os: ['ubuntu-latest']
 
     steps:
@@ -48,7 +46,7 @@ jobs:
 
     strategy:
       matrix:
-        otp-version: ['21', '22', '23']
+        otp-version: ['23', '22', '21']
 
     steps:
     - uses: actions/checkout@v4
