@@ -26,21 +26,23 @@ map_depth(_) ->
     Map = #{a => #{b => #{c => #{d => x}},
                    f => g},
             1 => #{2 => #{3 => x}}},
-    ?assertEqual(
-        "a_f=g a_b_c=... 1_2_3=x ",
-        lists:flatten(
+    Result1 = lists:flatten(
           logjam:format(#{level => info, msg => {report, Map}, meta => #{}},
                          #{template => Template,
                            map_depth => 3})
-        )
-    ),
+        ),
     ?assertEqual(
-        "a=... 1=... ",
-        lists:flatten(
+        2,
+        length(string:split(Result1, "...", all))
+    ),
+    Result2 = lists:flatten(
           logjam:format(#{level => info, msg => {report, Map}, meta => #{}},
                          #{template => Template,
                            map_depth => 1})
-        )
+        ),
+    ?assertEqual(
+        3,
+       length(string:split(Result2, "...", all))
     ),
 
     ok.

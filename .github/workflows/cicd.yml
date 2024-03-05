@@ -13,7 +13,7 @@ on:
 jobs:
 
   builds:
-    name: Erlang ${{ matrix.otp_version }} build
+    name: Erlang ${{ matrix.otp-version }} build
     runs-on: ubuntu-latest
 
     strategy:
@@ -43,18 +43,18 @@ jobs:
       run: rebar3 demo
 
   older-builds:
-    name: Erlang ${{ matrix.otp_version }} build (old)
+    name: Erlang ${{ matrix.otp-version }} build (old)
     runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        otp_version: ['21', '22', '23']
+        otp-version: ['21', '22', '23']
 
     steps:
     - uses: actions/checkout@v4
     - uses: erlef/setup-beam@v1
       with:
-        otp-version: ${{ matrix.otp_version }}
+        otp-version: ${{ matrix.otp-version }}
         rebar3-version: '3.15'
     - name: Compile
       run: rebar3 compile
