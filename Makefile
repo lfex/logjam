@@ -1,6 +1,9 @@
 build:
 	@rebar3 compile
 
+demo:
+	@rebar3 demo
+
 hex-publish:
 	@echo "\nPublishing to hex.pm ...\n"
 	rm -rf doc
